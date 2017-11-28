@@ -1,5 +1,6 @@
 package com.joker.simplyadvanced;
 
+import com.joker.simplyadvanced.common.init.Items;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -13,7 +14,8 @@ public class Main
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-
+        Items.init();
+        Items.reg();
     }
 
     @EventHandler
