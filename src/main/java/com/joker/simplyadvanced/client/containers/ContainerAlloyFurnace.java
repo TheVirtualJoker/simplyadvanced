@@ -16,6 +16,7 @@ public class ContainerAlloyFurnace extends Container {
 
     ContainerAlloyFurnace(InventoryPlayer player, TileEntityAlloyFurnace tileentity) {
         this.tileentity = tileentity;
+
     }
 
     @Override
