@@ -13,7 +13,7 @@ public class Main
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        //commit test
+
     }
 
     @EventHandler
