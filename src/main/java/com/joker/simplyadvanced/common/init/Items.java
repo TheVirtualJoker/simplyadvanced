@@ -5,14 +5,14 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Items {
-    public static Item copperIngot;
+    public static Item COPPER_INGOT;
 
     public static void init() {
-        copperIngot = new ItemCopperIngot();
+        COPPER_INGOT = new ItemCopperIngot();
     }
 
     public static void reg() {
-        regItem(copperIngot);
+        regItem(COPPER_INGOT);
     }
 
     private static void regItem(Item item) {

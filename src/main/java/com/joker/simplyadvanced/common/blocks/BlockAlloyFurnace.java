@@ -1,7 +1,7 @@
 package com.joker.simplyadvanced.common.blocks;
 
 import com.joker.simplyadvanced.common.init.Blocks;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -10,14 +10,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
@@ -29,7 +27,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
         super(Material.ROCK, MapColor.BLACK);
         setUnlocalizedName("alloy_furnace");
         setRegistryName("alloyfurnace");
-        setCreativeTab(CreativeTabs.FOOD);
+        setCreativeTab(CreativeUtil.TAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
     }
 
