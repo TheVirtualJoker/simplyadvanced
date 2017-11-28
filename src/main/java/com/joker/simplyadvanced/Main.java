@@ -1,7 +1,6 @@
 package com.joker.simplyadvanced;
 
-import com.joker.simplyadvanced.lib.References;
-import net.minecraft.init.Blocks;
+import com.joker.simplyadvanced.common.lib.References;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -14,7 +13,7 @@ public class Main
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-
+        //commit test
     }
 
     @EventHandler
