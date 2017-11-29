@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.common.init;
 
 import com.joker.simplyadvanced.common.items.ItemCopperIngot;
 import com.joker.simplyadvanced.common.items.base.*;
-import com.joker.simplyadvanced.common.items.fuels.ItemHighTempFuel;
+import com.joker.simplyadvanced.common.items.ItemHighTempFuel;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;

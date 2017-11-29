@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.items.fuels;
+package com.joker.simplyadvanced.common.items;
 
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.item.Item;
