@@ -20,10 +20,10 @@ public class AlloyFurnaceRecipes {
     }
 
     private AlloyFurnaceRecipes() {
-        this.addMixRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.DIAMOND), 10F);
+        this.addAlloyFurnaceRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.DIAMOND, 2), 10F);
     }
 
-    public void addMixRecipe(ItemStack input1, ItemStack input2, ItemStack result, float exp) {
+    public void addAlloyFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack result, float exp) {
         if (getAlloyFurnaceResult(input1, input2) != ItemStack.EMPTY) {
             FMLLog.info("A recipe has already been registered for the 'Alloy Furnace' with the same recipe! Ignoring this so there is no conflict!!!");
             return;

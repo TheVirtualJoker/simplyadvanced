@@ -42,6 +42,7 @@ public class ContainerAlloyFurnace extends Container {
         listener.sendAllWindowProperties(this, this.tileentity);
     }
 
+
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();

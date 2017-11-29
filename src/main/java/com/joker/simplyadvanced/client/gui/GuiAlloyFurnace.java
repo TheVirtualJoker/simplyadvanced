@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
+import java.awt.*;
+
 public class GuiAlloyFurnace extends GuiContainer {
 
     private static final ResourceLocation ALLOYFURNACE_TEXTURE = new ResourceLocation(References.MODID + ":textures/gui/container/alloyfurnace.png");
@@ -23,8 +25,7 @@ public class GuiAlloyFurnace extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String s = this.tileentity.getDisplayName().getUnformattedText();
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 0);
-        this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 0);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 4, Color.WHITE.getRGB());
     }
 
     @Override
@@ -56,5 +57,12 @@ public class GuiAlloyFurnace extends GuiContainer {
         int i = this.tileentity.getField(2);
         int j = this.tileentity.getField(3);
         return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 }
