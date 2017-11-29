@@ -5,6 +5,7 @@ item.copper_axe.name=Copper Axe
 item.copper_hoe.name=Copper Hoe
 item.copper_sword.name=Copper Sword
 
-container.alloy_furnace=Alloy Furnace
+tile.alloy_furnace.name=Alloy Furnace
+tile.copper_ore.name=Copper Ore
 
 itemGroup.simplyadvanced=Simply Advanced
