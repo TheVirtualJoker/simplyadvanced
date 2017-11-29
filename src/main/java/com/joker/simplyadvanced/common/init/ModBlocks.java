@@ -2,6 +2,7 @@ package com.joker.simplyadvanced.common.init;
 
 import com.joker.simplyadvanced.common.blocks.BlockAlloyFurnace;
 import com.joker.simplyadvanced.common.blocks.BlockCopperOre;
+import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -14,15 +15,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModBlocks {
     public static Block ALLOYSMELTER;
     public static Block COPPER_ORE;
+    public static Block KILN;
 
     public static void init() {
         ALLOYSMELTER = new BlockAlloyFurnace();
         COPPER_ORE = new BlockCopperOre();
+        KILN = new BlockKiln();
     }
 
     public static void register() {
         registerBlock(ALLOYSMELTER);
         registerBlock(COPPER_ORE);
+        registerBlock(KILN);
         GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloyfurnace");
     }
 
@@ -37,6 +41,7 @@ public class ModBlocks {
     public static void registerRenders() {
         registerRender(ALLOYSMELTER);
         registerRender(COPPER_ORE);
+        registerRender(KILN);
     }
 
     public static void registerRender(net.minecraft.block.Block block) {
