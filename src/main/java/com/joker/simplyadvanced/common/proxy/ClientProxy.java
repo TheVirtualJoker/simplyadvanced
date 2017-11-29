@@ -1,10 +1,10 @@
 package com.joker.simplyadvanced.common.proxy;
 
-import com.joker.simplyadvanced.common.init.Blocks;
+import com.joker.simplyadvanced.common.init.ModBlocks;
 
 public class ClientProxy extends CommonProxy {
     @Override
     public void register() {
-        Blocks.registerRender(Blocks.alloySmelter);
+        ModBlocks.registerRender(ModBlocks.alloySmelter);
     }
 }

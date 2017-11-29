@@ -1,8 +1,8 @@
 package com.joker.simplyadvanced;
 
 import com.joker.simplyadvanced.client.gui.AlloyFurnaceGuiHandler;
-import com.joker.simplyadvanced.common.init.Blocks;
-import com.joker.simplyadvanced.common.init.Items;
+import com.joker.simplyadvanced.common.init.ModBlocks;
+import com.joker.simplyadvanced.common.init.ModItems;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -25,10 +25,10 @@ public class Main
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        Items.init();
-        Items.reg();
-        Blocks.init();
-        Blocks.register();
+        ModItems.init();
+        ModItems.reg();
+        ModBlocks.init();
+        ModBlocks.register();
     }
 
     @EventHandler
