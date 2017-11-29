@@ -1,3 +1,10 @@
 item.copper_ingot.name=Copper Ingot
+item.copper_spade.name=Copper Shovel
+item.copper_pickaxe.name=Copper Pickaxe
+item.copper_axe.name=Copper Axe
+item.copper_hoe.name=Copper Hoe
+item.copper_sword.name=Copper Sword
+
+container.alloy_furnace=Alloy Furnace
 
 itemGroup.simplyadvanced=Simply Advanced
