@@ -3,7 +3,6 @@ package com.joker.simplyadvanced.common.recipes;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Table;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLLog;
@@ -13,8 +12,8 @@ import java.util.Map.Entry;
 
 public class AlloyFurnaceRecipes {
     private static final AlloyFurnaceRecipes SMELT = new AlloyFurnaceRecipes();
-    private final Table<ItemStack, ItemStack, ItemStack> alloySmeltingList = HashBasedTable.<ItemStack, ItemStack, ItemStack>create();
-    private final Map<ItemStack, Float> experienceList = Maps.<ItemStack, Float>newHashMap();
+    private final Table<ItemStack, ItemStack, ItemStack> alloySmeltingList = HashBasedTable.create();
+    private final Map<ItemStack, Float> experienceList = Maps.newHashMap();
 
     public static AlloyFurnaceRecipes instance() {
         return SMELT;
@@ -30,15 +29,16 @@ public class AlloyFurnaceRecipes {
             return;
         }
         this.alloySmeltingList.put(input1, input2, result);
+        this.alloySmeltingList.put(input2, input1, result);
         this.experienceList.put(result, Float.valueOf(exp));
     }
 
     public ItemStack getAlloyFurnaceResult(ItemStack input, ItemStack input2) {
         for (Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.alloySmeltingList.columnMap().entrySet()) {
-            if (this.compareItemStacks(input, (ItemStack) entry.getKey())) {
+            if (this.compareItemStacks(input, entry.getKey())) {
                 for (Entry<ItemStack, ItemStack> ent : entry.getValue().entrySet()) {
-                    if (this.compareItemStacks(input2, (ItemStack) ent.getKey())) {
-                        return (ItemStack) ent.getValue();
+                    if (this.compareItemStacks(input2, ent.getKey())) {
+                        return ent.getValue();
                     }
                 }
             }
@@ -56,8 +56,8 @@ public class AlloyFurnaceRecipes {
 
     public float getAlloyExperience(ItemStack stack) {
         for (Map.Entry<ItemStack, Float> entry : this.experienceList.entrySet()) {
-            if (this.compareItemStacks(stack, (ItemStack) entry.getKey())) {
-                return ((Float) entry.getValue()).floatValue();
+            if (this.compareItemStacks(stack, entry.getKey())) {
+                return entry.getValue().floatValue();
             }
         }
         return 0.0F;
