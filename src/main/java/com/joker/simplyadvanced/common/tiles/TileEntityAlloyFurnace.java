@@ -43,7 +43,7 @@ public class TileEntityAlloyFurnace extends TileEntity implements IInventory, IT
 
     @Override
     public String getName() {
-        return this.hasCustomName() ? this.customName : "container.alloy_furnace";
+        return this.hasCustomName() ? this.customName : "Alloy Furnace";
     }
 
     @Override

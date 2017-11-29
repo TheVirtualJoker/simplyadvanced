@@ -12,15 +12,16 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModBlocks {
-    public static Block alloySmelter, COPPER_ORE;
+    public static Block ALLOYSMELTER;
+    public static Block COPPER_ORE;
 
     public static void init() {
-        alloySmelter = new BlockAlloyFurnace();
+        ALLOYSMELTER = new BlockAlloyFurnace();
         COPPER_ORE = new BlockCopperOre();
     }
 
     public static void register() {
-        registerBlock(alloySmelter);
+        registerBlock(ALLOYSMELTER);
         registerBlock(COPPER_ORE);
         GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloyfurnace");
     }
@@ -34,7 +35,7 @@ public class ModBlocks {
     }
 
     public static void registerRenders() {
-        registerRender(alloySmelter);
+        registerRender(ALLOYSMELTER);
         registerRender(COPPER_ORE);
     }
 

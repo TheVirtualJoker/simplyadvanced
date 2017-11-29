@@ -14,6 +14,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
@@ -22,8 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
@@ -37,6 +41,17 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
         setRegistryName("alloyfurnace");
         setCreativeTab(CreativeUtil.TAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add(TextFormatting.AQUA + "Power: " + TextFormatting.GRAY + "Coal");
+        tooltip.add(TextFormatting.GREEN + "Tier: " + TextFormatting.RED + "Stone Age");
+        tooltip.add(TextFormatting.GOLD + "Description: " + TextFormatting.GRAY + "Used to smelt metals together.");
+        tooltip.add("When ores are placed in with sand, it has a");
+        tooltip.add("doubling effect!");
+
     }
 
     @Override
@@ -79,9 +94,9 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (active) {
-            worldIn.setBlockState(pos, ModBlocks.alloySmelter.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
+            worldIn.setBlockState(pos, ModBlocks.ALLOYSMELTER.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, true), 3);
         } else {
-            worldIn.setBlockState(pos, ModBlocks.alloySmelter.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
+            worldIn.setBlockState(pos, ModBlocks.ALLOYSMELTER.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(BURNING, false), 3);
         }
 
         if (tileEntity != null) {
@@ -92,7 +107,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(ModBlocks.alloySmelter);
+        return Item.getItemFromBlock(ModBlocks.ALLOYSMELTER);
     }
 
     @Override
@@ -119,7 +134,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(ModBlocks.alloySmelter);
+        return new ItemStack(ModBlocks.ALLOYSMELTER);
     }
 
     @Override
