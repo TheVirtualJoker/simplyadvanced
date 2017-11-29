@@ -4,6 +4,7 @@ import com.joker.simplyadvanced.common.blocks.BlockAlloyFurnace;
 import com.joker.simplyadvanced.common.blocks.BlockCopperOre;
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -28,6 +29,7 @@ public class ModBlocks {
         registerBlock(COPPER_ORE);
         registerBlock(KILN);
         GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloyfurnace");
+        GameRegistry.registerTileEntity(TileEntityKiln.class, "kiln");
     }
 
 
