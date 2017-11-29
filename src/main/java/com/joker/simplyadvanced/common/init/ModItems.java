@@ -2,6 +2,7 @@ package com.joker.simplyadvanced.common.init;
 
 import com.joker.simplyadvanced.common.items.ItemCopperIngot;
 import com.joker.simplyadvanced.common.items.base.*;
+import com.joker.simplyadvanced.common.items.fuels.ItemHighTempFuel;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -15,7 +16,8 @@ public class ModItems {
             COPPER_PICKAXE,
             COPPER_AXE,
             COPPER_HOE,
-            COPPER_SWORD;
+            COPPER_SWORD,
+            HIGH_TEMP_FUEL;
 
     public static void init() {
         COPPER_INGOT = new ItemCopperIngot();
@@ -24,6 +26,7 @@ public class ModItems {
         COPPER_AXE = new CustomAxe(SAToolMaterial.COPPER).setUnlocalizedName("copper_axe").setRegistryName("copper_axe");
         COPPER_HOE = new CustomHoe(SAToolMaterial.COPPER).setUnlocalizedName("copper_hoe").setRegistryName("copper_hoe");
         COPPER_SWORD = new CustomSword(SAToolMaterial.COPPER).setUnlocalizedName("copper_sword").setRegistryName("copper_sword");
+        HIGH_TEMP_FUEL = new ItemHighTempFuel();
     }
 
     public static void reg() {
@@ -33,6 +36,7 @@ public class ModItems {
         regItem(COPPER_AXE);
         regItem(COPPER_HOE);
         regItem(COPPER_SWORD);
+        regItem(HIGH_TEMP_FUEL);
     }
 
     private static void regItem(Item item) {
