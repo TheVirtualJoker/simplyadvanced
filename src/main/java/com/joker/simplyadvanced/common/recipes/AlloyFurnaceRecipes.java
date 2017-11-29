@@ -21,6 +21,7 @@ public class AlloyFurnaceRecipes {
 
     private AlloyFurnaceRecipes() {
         this.addMixRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.DIAMOND), 10F);
+        this.addMixRecipe(new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.DIAMOND), 10F);
     }
 
     public void addMixRecipe(ItemStack input1, ItemStack input2, ItemStack result, float exp) {
