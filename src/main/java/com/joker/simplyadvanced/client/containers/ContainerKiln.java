@@ -1,5 +1,6 @@
 package com.joker.simplyadvanced.client.containers;
 
+import com.joker.simplyadvanced.client.containers.slot.SlotKilnInput;
 import com.joker.simplyadvanced.client.containers.slot.SlotKilnOutput;
 import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ public class ContainerKiln extends Container {
 
     public ContainerKiln(InventoryPlayer player, TileEntityKiln tileentity) {
         this.tileentity = tileentity;
-        this.addSlotToContainer(new Slot(tileentity, 0, 52, 28));
+        this.addSlotToContainer(new SlotKilnInput(tileentity, 0, 52, 28));
         this.addSlotToContainer(new SlotKilnOutput(player.player, tileentity, 1, 118, 28));
 
         for (int y = 0; y < 3; y++) {
@@ -76,26 +77,19 @@ public class ContainerKiln extends Container {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
 
-            if (index == 1) {
-                if (!this.mergeItemStack(stack1, 4, playerIn.inventory.getSizeInventory(), true)) {
+            if (index < tileentity.getSizeInventory()) {
+                if (!this.mergeItemStack(stack1, tileentity.getSizeInventory(), inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onSlotChange(stack1, stack);
-            } else if (index != 0) {
-                if (tileentity.canHarden(slot.getStack())) {
-                    if (!this.mergeItemStack(stack1, 0, 1, false))
-                        return ItemStack.EMPTY;
-                }
-            } else if (!this.mergeItemStack(stack1, 4, playerIn.inventory.getSizeInventory(), false))
+            } else if (!this.mergeItemStack(stack1, 0, tileentity.getSizeInventory(), false)) {
                 return ItemStack.EMPTY;
+            }
 
-            if (stack1.isEmpty()) {
+            if (stack1.getCount() == 0) {
                 slot.putStack(ItemStack.EMPTY);
-            }else {
+            } else {
                 slot.onSlotChanged();
             }
-            if (stack1.getCount() == stack.getCount()) return ItemStack.EMPTY;
-            slot.onTake(playerIn, stack1);
         }
         return stack;
     }

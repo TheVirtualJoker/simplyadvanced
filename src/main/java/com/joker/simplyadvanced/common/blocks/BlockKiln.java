@@ -17,14 +17,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BlockKiln extends Block implements ITileEntityProvider {
+    private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D);
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool OPENED = PropertyBool.create("open");
+    public static final PropertyBool BURNING = PropertyBool.create("burning");
 
     public BlockKiln() {
         super(Material.ROCK, MapColor.CYAN);
@@ -32,13 +36,15 @@ public class BlockKiln extends Block implements ITileEntityProvider {
         setRegistryName("kiln");
         setCreativeTab(CreativeUtil.TAB);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH)
-                .withProperty(OPENED, false));
+                .withProperty(OPENED, false).withProperty(BURNING, false));
+        setResistance(3F);
+        setHarvestLevel("pickaxe", 2);
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         EnumFacing facing = placer.getHorizontalFacing();
-        IBlockState newState = getBlockState().getBaseState().withProperty(FACING, facing).withProperty(OPENED, false);
+        IBlockState newState = getBlockState().getBaseState().withProperty(FACING, facing).withProperty(OPENED, false).withProperty(BURNING, false);
         worldIn.setBlockState(pos, newState);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
@@ -78,7 +84,7 @@ public class BlockKiln extends Block implements ITileEntityProvider {
 
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(OPENED, false);
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(OPENED, false).withProperty(BURNING, false);
     }
 
     public int getMetaFromState(IBlockState state) {
@@ -95,7 +101,7 @@ public class BlockKiln extends Block implements ITileEntityProvider {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, OPENED, FACING);
+        return new BlockStateContainer(this, OPENED, FACING, BURNING);
     }
 
 
@@ -113,5 +119,18 @@ public class BlockKiln extends Block implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityKiln();
+    }
+
+
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BOUNDING_BOX;
+    }
+
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return BOUNDING_BOX;
     }
 }

@@ -43,19 +43,18 @@ public class KilnItemRender extends TileEntitySpecialRenderer<TileEntityKiln> {
         }
 
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glTranslatef((float) x + 0.5F + xOffset, (float) y - 0.047F, (float) z + 0.3F + zOffset);
+        GL11.glTranslatef((float) x + 0.5F + xOffset, (float) y + 0.45F, (float) z + 0.3F + zOffset);
         GL11.glRotatef(angle, 0, 1, 0);
         GL11.glRotatef(180, 0, 1, 1);
         GlStateManager.translate(0, 0.1, 0);
         GL11.glScalef(1.3F, 1.3F, 1.3F);
 
         if (state.getValue(BlockKiln.OPENED)) {
-            ItemStack stack = ItemStack.EMPTY;
-            if (kiln.isBurning()) {
-                stack = kiln.getStackInSlot(0);
-            }
+            ItemStack stack = kiln.getStackInSlot(0);
             if (!kiln.getStackInSlot(1).isEmpty())
                 stack = kiln.getStackInSlot(1);
+            if (stack.isEmpty() && kiln.getStackInSlot(1).isEmpty())
+                stack = ItemStack.EMPTY;
 
             EntityItem entityItem = new EntityItem(Minecraft.getMinecraft().world, 0D, 0D, 0D, stack);
             entityItem.hoverStart = 0.0F;

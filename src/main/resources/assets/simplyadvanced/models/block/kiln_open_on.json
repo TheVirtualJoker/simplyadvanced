@@ -4,7 +4,7 @@
     "particle": "simplyadvanced:blocks/kiln/kiln_gray_texture",
     "gray": "simplyadvanced:blocks/kiln/kiln_gray_texture",
     "darkgray": "simplyadvanced:blocks/kiln/dark_gray",
-    "coil": "simplyadvanced:blocks/kiln/heater_coil",
+    "coil": "simplyadvanced:blocks/kiln/heater_coil_on",
     "backdoor": "simplyadvanced:blocks/kiln/kiln_door_back"
   },
   "elements": [

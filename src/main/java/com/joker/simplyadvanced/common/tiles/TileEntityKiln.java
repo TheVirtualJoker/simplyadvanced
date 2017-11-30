@@ -8,6 +8,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -24,7 +25,6 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     private NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     private String customName;
     private int cookTime, per3 = 0;
-    private boolean alter = false;
     private final int totalCookTime = 500;
 
     @Override
@@ -153,21 +153,24 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
 
     @Override
     public void update() {
-        alter = !alter;
         boolean mk = false;
+        IBlockState state = getWorld().getBlockState(getPos());
+        if (isBurning() && !state.getValue(BlockKiln.BURNING))
+            world.setBlockState(pos, state.withProperty(BlockKiln.BURNING, true));
+        if (!isBurning() && state.getValue(BlockKiln.BURNING))
+            world.setBlockState(pos, state.withProperty(BlockKiln.BURNING, false));
         if (canHarden() && (!inventory.get(0).isEmpty()) && inventory.get(1).isEmpty()) {
             if (per3 >= 3) {
                 per3 = 0;
-                IBlockState state = getWorld().getBlockState(getPos());
-                if (state.getValue(BlockKiln.OPENED)) spawnParticles(EnumParticleTypes.FLAME, world, pos);
+                if (state.getValue(BlockKiln.OPENED) && state.getValue(BlockKiln.BURNING)) {
+                    spawnParticles(EnumParticleTypes.FLAME, world, pos);
+                }
             }
             per3++;
             this.cookTime++;
             if (this.cookTime == this.totalCookTime) {
                 this.cookTime = 0;
                 this.hardenItem();
-                IBlockState state = getWorld().getBlockState(getPos());
-                if (state.getValue(BlockKiln.OPENED)) spawnParticles(EnumParticleTypes.FLAME, world, pos);
                 mk = true;
             }
         } else {
@@ -202,7 +205,7 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
 
         for (int i = 0; i < 3; ++i) {
             double d1 = (double) ((float) (pos.getX() + 0.5) + randomFloat(random, -0.3F, 0.3F));
-            double d2 = (double) ((float) pos.getY() + randomFloat(random, 0.2F, 0.4F));
+            double d2 = (double) ((float) (pos.getY()+0.5) + randomFloat(random, 0.2F, 0.4F));
             double d3 = (double) ((float) (pos.getZ() + 0.5) + randomFloat(random, -0.3F, 0.3F));
 
             worldIn.spawnParticle(particle, d1, d2, d3, 0.0D, 0.0D, 0.0D);
@@ -219,6 +222,7 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
             Item item = input.getItem().setMaxDamage(input.getMaxDamage() * 2);
             ItemStack result = item.getDefaultInstance();
             result.setTagInfo("ench", input.getEnchantmentTagList());
+            result.setTagInfo("hardened", new NBTTagString("This item has been Hardened via the Kiln"));
             ItemStack output = this.inventory.get(1);
 
             if (output.isEmpty()) {
@@ -234,9 +238,11 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
         else {
             ItemStack result = inventory.get(0);
 
-            if (result.isEmpty())
+            if (result.isEmpty()){
                 return false;
-            else {
+            } else {
+                if (!canHarden(result)) return false;
+
                 ItemStack output = this.inventory.get(1);
                 if (output.isEmpty()) return true;
                 if (!output.isItemEqual(result)) return false;

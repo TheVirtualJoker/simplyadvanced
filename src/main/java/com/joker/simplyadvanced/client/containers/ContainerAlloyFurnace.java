@@ -1,6 +1,5 @@
 package com.joker.simplyadvanced.client.containers;
 
-import com.joker.simplyadvanced.common.recipes.AlloyFurnaceRecipes;
 import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -48,7 +47,7 @@ public class ContainerAlloyFurnace extends Container {
         super.detectAndSendChanges();
 
         for (int i = 0; i < this.listeners.size(); i++) {
-            IContainerListener listener = (IContainerListener) this.listeners.get(i);
+            IContainerListener listener = this.listeners.get(i);
 
             if (this.cookTime != this.tileentity.getField(2))
                 listener.sendWindowProperty(this, 2, this.tileentity.getField(2));
@@ -80,40 +79,25 @@ public class ContainerAlloyFurnace extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack stack = ItemStack.EMPTY;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
 
-            if (index == 3) {
-                if (!this.mergeItemStack(stack1, 4, 40, true)) {
+            if (index < tileentity.getSizeInventory()) {
+                if (!this.mergeItemStack(stack1, tileentity.getSizeInventory(), inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-                slot.onSlotChange(stack1, stack);
-            } else if (index != 2 && index != 1 && index != 0) {
-                Slot slot1 = (Slot) this.inventorySlots.get(index + 1);
+            } else if (!this.mergeItemStack(stack1, 0, tileentity.getSizeInventory(), false)) {
+                return ItemStack.EMPTY;
+            }
 
-                if (!AlloyFurnaceRecipes.instance().getAlloyFurnaceResult(stack1, slot1.getStack()).isEmpty()) {
-                    if (!this.mergeItemStack(stack1, 0, 2, false))
-                        return ItemStack.EMPTY;
-                } else if (TileEntityAlloyFurnace.isItemFuel(stack1))
-                    if (!this.mergeItemStack(stack1, 2, 3, false))
-                        return ItemStack.EMPTY;
-                    else if (index >= 4 && index < 31)
-                        if (!this.mergeItemStack(stack1, 31, 40, false))
-                            return ItemStack.EMPTY;
-                        else if (index >= 31 && index < 40 && !this.mergeItemStack(stack1, 4, 31, false))
-                            return ItemStack.EMPTY;
-            } else if (!this.mergeItemStack(stack1, 4, 40, false))
-                return ItemStack.EMPTY;
-            if (stack1.isEmpty())
+            if (stack1.getCount() == 0) {
                 slot.putStack(ItemStack.EMPTY);
-            else
-                slot.onSlotChanged();
-            if (stack1.getCount() == stack.getCount())
-                return ItemStack.EMPTY;
-            slot.onTake(playerIn, stack1);
+            } else {
+                slot.onTake(playerIn, stack1);
+            }
         }
         return stack;
     }
