@@ -5,7 +5,7 @@ import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.init.ModItems;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.proxy.CommonProxy;
-import com.joker.simplyadvanced.common.utils.RecipeHandler;
+import com.joker.simplyadvanced.common.recipes.RecipeHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;

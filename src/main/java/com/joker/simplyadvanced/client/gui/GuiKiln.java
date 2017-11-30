@@ -39,7 +39,7 @@ public class GuiKiln extends GuiContainer {
             progressBar = new ProgressBar(TEXTURE, ProgressBar.ProgressBarDirection.LEFT_TO_RIGHT,
                     24, 17, 81, 28, 176, 0);
         }
-        progressBar.setMax(tileentity.getField(0)).setMin(tileentity.getField(1));
+        progressBar.setMax(tileentity.getField(1)).setMin(tileentity.getField(0));
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.getTextureManager().bindTexture(TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);

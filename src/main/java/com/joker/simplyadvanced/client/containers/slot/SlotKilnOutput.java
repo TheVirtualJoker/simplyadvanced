@@ -30,20 +30,7 @@ public class SlotKilnOutput extends Slot {
 
     @Override
     public ItemStack onTake(EntityPlayer player, ItemStack stack) {
-        this.onCrafting(stack);
         super.onTake(player, stack);
         return stack;
-    }
-
-    @Override
-    protected void onCrafting(ItemStack stack, int amount) {
-        this.removeCount += amount;
-        this.onCrafting(stack);
-    }
-
-    @Override
-    protected void onCrafting(ItemStack stack) {
-        stack.onCrafting(this.player.world, this.player, this.removeCount);
-        this.removeCount = 0;
     }
 }

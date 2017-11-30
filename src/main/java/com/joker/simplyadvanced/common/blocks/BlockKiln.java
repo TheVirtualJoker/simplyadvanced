@@ -52,7 +52,6 @@ public class BlockKiln extends Block implements ITileEntityProvider {
                 super.onBlockActivated(world, pos, newState, player, hand, facing, hitX, hitY, hitZ);
                 return true;
             }
-
             player.openGui(References.MODID, AlloyFurnaceGuiHandler.KILN, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;

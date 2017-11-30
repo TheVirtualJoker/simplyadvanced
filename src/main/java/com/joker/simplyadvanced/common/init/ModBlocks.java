@@ -28,7 +28,7 @@ public class ModBlocks {
         registerBlock(ALLOYSMELTER);
         registerBlock(COPPER_ORE);
         registerBlock(KILN);
-        GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloyfurnace");
+        GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloy_furnace");
         GameRegistry.registerTileEntity(TileEntityKiln.class, "kiln");
     }
 

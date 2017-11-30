@@ -77,7 +77,7 @@ public class ContainerKiln extends Container {
             stack = stack1.copy();
 
             if (index == 1) {
-                if (!this.mergeItemStack(stack1, 4, 40, true)) {
+                if (!this.mergeItemStack(stack1, 4, playerIn.inventory.getSizeInventory(), true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack1, stack);
@@ -86,7 +86,7 @@ public class ContainerKiln extends Container {
                     if (!this.mergeItemStack(stack1, 0, 1, false))
                         return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(stack1, 4, 40, false))
+            } else if (!this.mergeItemStack(stack1, 4, playerIn.inventory.getSizeInventory(), false))
                 return ItemStack.EMPTY;
 
             if (stack1.isEmpty()) {

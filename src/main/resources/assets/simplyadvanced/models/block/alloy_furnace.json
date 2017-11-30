@@ -1,0 +1,10 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "particle": "simplyadvanced:blocks/alloy_furnace_front_off",
+    "top": "simplyadvanced:blocks/alloy_furnace_top",
+    "bottom": "simplyadvanced:blocks/alloy_furnace_top",
+    "front": "simplyadvanced:blocks/alloy_furnace_front_off",
+    "side": "simplyadvanced:blocks/alloy_furnace_side"
+  }
+}

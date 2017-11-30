@@ -1,19 +1,18 @@
 package com.joker.simplyadvanced.common.tiles;
 
+import com.joker.simplyadvanced.common.blocks.BlockKiln;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -24,11 +23,14 @@ import java.util.Random;
 public class TileEntityKiln extends TileEntity implements IInventory, ITickable {
     private NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     private String customName;
-    private int burnTime;
-    private int currentBurnTime;
-    private int cookTime;
+    private int cookTime, per3 = 0;
     private boolean alter = false;
-    private final int totalCookTime = 300;
+    private final int totalCookTime = 500;
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return (oldState.getBlock() != newState.getBlock());
+    }
 
     @Override
     public int getSizeInventory() {
@@ -75,7 +77,6 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
         super.readFromNBT(compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
-        this.burnTime = compound.getInteger("BurnTime");
         this.cookTime = compound.getInteger("CookTime");
 
         if (compound.hasKey("CustomName", 8)) this.setCustomName(compound.getString("CustomName"));
@@ -84,7 +85,6 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("BurnTime", this.burnTime);
         compound.setInteger("CookTime", this.cookTime);
         ItemStackHelper.saveAllItems(compound, this.inventory);
 
@@ -120,12 +120,8 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     public int getField(int id) {
         switch (id) {
             case 0:
-                return this.burnTime;
-            case 1:
-                return this.currentBurnTime;
-            case 2:
                 return this.cookTime;
-            case 3:
+            case 1:
                 return this.totalCookTime;
             default:
                 return 0;
@@ -136,12 +132,6 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     public void setField(int id, int value) {
         switch (id) {
             case 0:
-                this.burnTime = value;
-                break;
-            case 1:
-                this.currentBurnTime = value;
-                break;
-            case 2:
                 this.cookTime = value;
                 break;
         }
@@ -158,37 +148,34 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     }
 
     public boolean isBurning() {
-        return this.burnTime > 0;
+        return this.cookTime > 0;
     }
 
     @Override
     public void update() {
-        boolean flag = this.isBurning();
-        boolean flag1 = false;
-
-        if (this.isBurning()) {
-            this.burnTime--;
-            if (alter) spawnParticles(EnumParticleTypes.FLAME, world, pos);
-        }
-
-        if (!this.world.isRemote) {
-            if (this.isBurning() && this.canSmelt()) {
-                this.cookTime++;
-
-                if (this.cookTime == this.totalCookTime) {
-                    this.cookTime = 0;
-                    this.smeltItem();
-                    flag1 = true;
-                }
-            } else this.cookTime = 0;
-            if (!this.isBurning() && this.cookTime > 0)
-                this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
-
-            if (flag != this.isBurning()) {
-                flag1 = true;
+        alter = !alter;
+        boolean mk = false;
+        if (canHarden() && (!inventory.get(0).isEmpty()) && inventory.get(1).isEmpty()) {
+            if (per3 >= 3) {
+                per3 = 0;
+                IBlockState state = getWorld().getBlockState(getPos());
+                if (state.getValue(BlockKiln.OPENED)) spawnParticles(EnumParticleTypes.FLAME, world, pos);
             }
+            per3++;
+            this.cookTime++;
+            if (this.cookTime == this.totalCookTime) {
+                this.cookTime = 0;
+                this.hardenItem();
+                IBlockState state = getWorld().getBlockState(getPos());
+                if (state.getValue(BlockKiln.OPENED)) spawnParticles(EnumParticleTypes.FLAME, world, pos);
+                mk = true;
+            }
+        } else {
+            per3 = 0;
+            this.cookTime = 0;
         }
-        if (flag1) this.markDirty();
+
+        if (mk) markDirty();
     }
 
     @Override
@@ -213,46 +200,36 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
     private void spawnParticles(EnumParticleTypes particle, World worldIn, BlockPos pos) {
         Random random = worldIn.rand;
 
-        for (int i = 0; i < 6; ++i) {
-            double d1 = (double) ((float) pos.getX() - random.nextFloat());
-            double d2 = (double) ((float) pos.getY() - random.nextFloat());
-            double d3 = (double) ((float) pos.getZ() - random.nextFloat());
+        for (int i = 0; i < 3; ++i) {
+            double d1 = (double) ((float) (pos.getX() + 0.5) + randomFloat(random, -0.3F, 0.3F));
+            double d2 = (double) ((float) pos.getY() + randomFloat(random, 0.2F, 0.4F));
+            double d3 = (double) ((float) (pos.getZ() + 0.5) + randomFloat(random, -0.3F, 0.3F));
 
-            if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube()) d2 = (double) pos.getY() + 0.0625D + 1.0D;
-            if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube()) d2 = (double) pos.getY() - 0.0625D;
-            if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube()) d3 = (double) pos.getZ() + 0.0625D + 1.0D;
-            if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube()) d3 = (double) pos.getZ() - 0.0625D;
-            if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube()) d1 = (double) pos.getX() + 0.0625D + 1.0D;
-            if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube()) d1 = (double) pos.getX() - 0.0625D;
-
-            if (d1 < (double) pos.getX()
-                    || d1 > (double) (pos.getX() + 1)
-                    || d2 < 0.0D || d2 > (double) (pos.getY() + 1)
-                    || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1))
-                worldIn.spawnParticle(particle, d1, d2, d3, 0.0D, 0.0D, 0.0D);
-
+            worldIn.spawnParticle(particle, d1, d2, d3, 0.0D, 0.0D, 0.0D);
         }
     }
 
-    public void smeltItem() {
-        if (this.canSmelt()) {
-            ItemStack input = this.inventory.get(0);
-            ItemStack copy = input.copy();
-            NBTTagCompound itemNBT = copy.getTagCompound();
-            Item item = copy.getItem().setMaxDamage(copy.getMaxDamage() * 2);
-            NBTTagCompound nbt = new ItemStack(item).getTagCompound();
-            nbt.merge(itemNBT);
-            ItemStack result = new ItemStack(nbt);
+    public float randomFloat(Random random, float start, float end) {
+        return start + random.nextFloat() * (end - start);
+    }
 
+    public void hardenItem() {
+        if (this.canHarden()) {
+            ItemStack input = this.inventory.get(0).copy();
+            Item item = input.getItem().setMaxDamage(input.getMaxDamage() * 2);
+            ItemStack result = item.getDefaultInstance();
+            result.setTagInfo("ench", input.getEnchantmentTagList());
             ItemStack output = this.inventory.get(1);
 
-            if (output.isEmpty()) inventory.set(1, result.copy());
-            input.shrink(1);
+            if (output.isEmpty()) {
+                inventory.set(0, ItemStack.EMPTY);
+                inventory.set(1, result.copy());
+            }
         }
     }
 
-    private boolean canSmelt() {
-        if (this.inventory.get(0).isEmpty() || this.inventory.get(1).isEmpty())
+    private boolean canHarden() {
+        if (this.inventory.get(0).isEmpty())
             return false;
         else {
             ItemStack result = inventory.get(0);
@@ -271,25 +248,18 @@ public class TileEntityKiln extends TileEntity implements IInventory, ITickable 
 
     public boolean canHarden(ItemStack stack) {
         NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt != null) {
-            NBTTagCompound disp = nbt.getCompoundTag("display");
-            if (disp != null) {
-                NBTTagList lore = disp.getTagList("Lore", 8);
-                if (lore != null) {
-                    for (NBTBase aLore : lore) {
-                        NBTTagString string = (NBTTagString) aLore;
-                        if (string.getString().equals("Hardened")) return false;
-                    }
-                }
-            }
+        if ((nbt != null) && nbt.hasKey("hardened")) {
+            return false;
         }
 
         Item item = stack.getItem();
-        return ((item instanceof ItemTool)
-                || (item instanceof ItemAxe)
-                || (item instanceof ItemSpade)
-                || (item instanceof ItemSword)
-                || (item instanceof ItemPickaxe)
-                || (item instanceof ItemHoe)
-                || (item instanceof ItemBow));
-    }}
+        return (item.getClass().getSimpleName().contains("Tool")
+                || item.getClass().getSimpleName().contains("Axe")
+                || item.getClass().getSimpleName().contains("Spade")
+                || item.getClass().getSimpleName().contains("Sword")
+                || item.getClass().getSimpleName().contains("Pickaxe")
+                || item.getClass().getSimpleName().contains("Hoe")
+                || item.getClass().getSimpleName().contains("Shovel")
+                || item.getClass().getSimpleName().contains("Bow"));
+    }
+}

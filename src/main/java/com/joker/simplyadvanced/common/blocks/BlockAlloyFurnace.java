@@ -26,7 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +37,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
     public BlockAlloyFurnace() {
         super(Material.ROCK, MapColor.BLACK);
         setUnlocalizedName("alloy_furnace");
-        setRegistryName("alloyfurnace");
+        setRegistryName("alloy_furnace");
         setCreativeTab(CreativeUtil.TAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
     }

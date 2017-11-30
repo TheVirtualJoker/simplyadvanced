@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.utils;
+package com.joker.simplyadvanced.common.recipes;
 
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.init.ModItems;

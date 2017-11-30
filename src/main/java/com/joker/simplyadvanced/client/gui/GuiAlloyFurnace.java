@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class GuiAlloyFurnace extends GuiContainer {
 
-    private static final ResourceLocation ALLOYFURNACE_TEXTURE = new ResourceLocation(References.MODID + ":textures/gui/container/alloyfurnace.png");
+    private static final ResourceLocation ALLOYFURNACE_TEXTURE = new ResourceLocation(References.MODID + ":textures/gui/container/alloy_furnace.png");
     private final InventoryPlayer player;
     private TileEntityAlloyFurnace tileentity;
 

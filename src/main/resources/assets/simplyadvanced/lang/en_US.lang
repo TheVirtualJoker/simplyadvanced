@@ -7,5 +7,6 @@ item.copper_sword.name=Copper Sword
 
 tile.alloy_furnace.name=Alloy Furnace
 tile.copper_ore.name=Copper Ore
+tile.kiln.name=Kiln
 
 itemGroup.simplyadvanced=Simply Advanced
