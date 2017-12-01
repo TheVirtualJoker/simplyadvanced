@@ -1,8 +1,10 @@
 package com.joker.simplyadvanced.common.init;
 
 import com.joker.simplyadvanced.common.items.ItemCopperIngot;
-import com.joker.simplyadvanced.common.items.base.*;
 import com.joker.simplyadvanced.common.items.ItemHighTempFuel;
+import com.joker.simplyadvanced.common.items.ItemSpeedUpgrade;
+import com.joker.simplyadvanced.common.items.ItemStorageUpgrade;
+import com.joker.simplyadvanced.common.items.base.*;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -17,7 +19,9 @@ public class ModItems {
             COPPER_AXE,
             COPPER_HOE,
             COPPER_SWORD,
-            HIGH_TEMP_FUEL;
+            HIGH_TEMP_FUEL,
+            SPEED_UPGRADE,
+            STORAGE_UPGRADE;
 
     public static void init() {
         COPPER_INGOT = new ItemCopperIngot();
@@ -27,6 +31,8 @@ public class ModItems {
         COPPER_HOE = new CustomHoe(SAToolMaterial.COPPER).setUnlocalizedName("copper_hoe").setRegistryName("copper_hoe");
         COPPER_SWORD = new CustomSword(SAToolMaterial.COPPER).setUnlocalizedName("copper_sword").setRegistryName("copper_sword");
         HIGH_TEMP_FUEL = new ItemHighTempFuel();
+        SPEED_UPGRADE = new ItemSpeedUpgrade();
+        STORAGE_UPGRADE = new ItemStorageUpgrade();
     }
 
     public static void reg() {
@@ -37,6 +43,8 @@ public class ModItems {
         regItem(COPPER_HOE);
         regItem(COPPER_SWORD);
         regItem(HIGH_TEMP_FUEL);
+        regItem(SPEED_UPGRADE);
+        regItem(STORAGE_UPGRADE);
     }
 
     private static void regItem(Item item) {

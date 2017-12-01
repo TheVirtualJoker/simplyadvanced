@@ -1,8 +1,10 @@
 package com.joker.simplyadvanced.client.gui;
 
 import com.joker.simplyadvanced.client.containers.ContainerAlloyFurnace;
+import com.joker.simplyadvanced.client.containers.ContainerGenerator;
 import com.joker.simplyadvanced.client.containers.ContainerKiln;
 import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
 import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +14,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 public class AlloyFurnaceGuiHandler implements IGuiHandler {
     public static final int ALLOYFURNACE = 0;
     public static final int KILN = 1;
+    public static final int GENERATOR = 3;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -19,6 +22,8 @@ public class AlloyFurnaceGuiHandler implements IGuiHandler {
             return new ContainerAlloyFurnace(player.inventory, ((TileEntityAlloyFurnace) world.getTileEntity(new BlockPos(x, y, z))));
         if (ID == KILN)
             return new ContainerKiln(player.inventory, ((TileEntityKiln) world.getTileEntity(new BlockPos(x, y, z))));
+        if (ID == GENERATOR)
+            return new ContainerGenerator(player.inventory, ((TileEntityGenerator) world.getTileEntity(new BlockPos(x, y, z))));
         return null;
     }
 
@@ -28,6 +33,8 @@ public class AlloyFurnaceGuiHandler implements IGuiHandler {
             return new GuiAlloyFurnace(player.inventory, ((TileEntityAlloyFurnace) world.getTileEntity(new BlockPos(x, y, z))));
         if (ID == KILN)
             return new GuiKiln(player.inventory, ((TileEntityKiln) world.getTileEntity(new BlockPos(x, y, z))));
+        if (ID == GENERATOR)
+            return new GuiGenerator(player.inventory, ((TileEntityGenerator) world.getTileEntity(new BlockPos(x, y, z))));
         return null;
     }
 }
