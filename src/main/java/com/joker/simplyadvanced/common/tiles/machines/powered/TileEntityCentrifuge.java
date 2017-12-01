@@ -164,6 +164,9 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory, ITic
 
         if (!this.world.isRemote) {
             if (!this.inventory.get(4).isEmpty() && this.energyStored > 0) {
+                if(!this.isSpining() && this.canSpin()){
+                    //Note Fix Class
+                }
                 if (this.isSpining() && this.canSpin()) {
                     this.spinTime++;
 
