@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.client.gui;
 
 import com.joker.simplyadvanced.client.containers.ContainerAlloyFurnace;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -1,8 +1,8 @@
 package com.joker.simplyadvanced.common.blocks;
 
-import com.joker.simplyadvanced.client.gui.AlloyFurnaceGuiHandler;
+import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -58,7 +58,7 @@ public class BlockKiln extends Block implements ITileEntityProvider {
                 super.onBlockActivated(world, pos, newState, player, hand, facing, hitX, hitY, hitZ);
                 return true;
             }
-            player.openGui(References.MODID, AlloyFurnaceGuiHandler.KILN, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(References.MODID, SAGuiHandler.KILN, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }

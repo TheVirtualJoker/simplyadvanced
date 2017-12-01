@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.client.containers;
 
 import com.joker.simplyadvanced.client.containers.slot.SlotKilnInput;
 import com.joker.simplyadvanced.client.containers.slot.SlotKilnOutput;
-import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

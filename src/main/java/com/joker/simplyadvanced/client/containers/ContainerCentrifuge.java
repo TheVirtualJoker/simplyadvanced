@@ -1,28 +1,29 @@
 package com.joker.simplyadvanced.client.containers;
 
-import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.client.containers.slot.SlotCentrifugeOut;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerAlloyFurnace extends Container {
+public class ContainerCentrifuge extends Container {
+    private final TileEntityCentrifuge tileentity;
 
-    private final TileEntityAlloyFurnace tileentity;
+    private int spinTime;
+    private int totalSpinTime;
+    private int energyStored;
+    private int energyMaxStored = 25000;
 
-    private int cookTime;
-    private int totalCookTime;
-    private int burnTime;
-    private int currentBurnTime;
-
-    public ContainerAlloyFurnace(InventoryPlayer player, TileEntityAlloyFurnace tileentity) {
+    public ContainerCentrifuge(InventoryPlayer player, TileEntityCentrifuge tileentity) {
         this.tileentity = tileentity;
-        this.addSlotToContainer(new Slot(tileentity, 0, 20, 18));
-        this.addSlotToContainer(new Slot(tileentity, 1, 140, 18));
-        this.addSlotToContainer(new SlotFurnaceFuel(tileentity, 2, 80, 59));
-        this.addSlotToContainer(new SlotFurnaceOutput(player.player, tileentity, 3, 80, 19));
+        this.addSlotToContainer(new Slot(tileentity, 4, 80, 34));
+        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 0, 80, 4));
+        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 1, 110, 34));
+        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 2, 80, 64));
+        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 3, 50, 34));
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {
@@ -41,32 +42,26 @@ public class ContainerAlloyFurnace extends Container {
         listener.sendAllWindowProperties(this, this.tileentity);
     }
 
-
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
         for (int i = 0; i < this.listeners.size(); i++) {
             IContainerListener listener = this.listeners.get(i);
-
-            if (this.cookTime != this.tileentity.getField(2))
-                listener.sendWindowProperty(this, 2, this.tileentity.getField(2));
-            if (this.burnTime != this.tileentity.getField(0))
+            if (this.spinTime != this.tileentity.getField(0))
                 listener.sendWindowProperty(this, 0, this.tileentity.getField(0));
-            if (this.currentBurnTime != this.tileentity.getField(1))
+            if (this.totalSpinTime != this.tileentity.getField(1))
                 listener.sendWindowProperty(this, 1, this.tileentity.getField(1));
-            if (this.totalCookTime != this.tileentity.getField(3))
-                listener.sendWindowProperty(this, 3, this.tileentity.getField(3));
+            if (this.energyStored != this.tileentity.getField(2))
+                listener.sendWindowProperty(this, 2, this.tileentity.getField(2));
         }
-
-        this.cookTime = this.tileentity.getField(2);
-        this.burnTime = this.tileentity.getField(0);
-        this.currentBurnTime = this.tileentity.getField(1);
-        this.totalCookTime = this.tileentity.getField(3);
+        this.spinTime = this.tileentity.getField(0);
+        this.totalSpinTime = this.tileentity.getField(1);
+        this.energyStored = this.tileentity.getField(2);
+        this.energyMaxStored = 25000;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
         this.tileentity.setField(id, data);
     }
@@ -102,4 +97,3 @@ public class ContainerAlloyFurnace extends Container {
         return stack;
     }
 }
-

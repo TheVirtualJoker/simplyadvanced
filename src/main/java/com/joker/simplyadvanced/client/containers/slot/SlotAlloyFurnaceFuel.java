@@ -1,6 +1,6 @@
 package com.joker.simplyadvanced.client.containers.slot;
 
-import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

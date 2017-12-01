@@ -1,7 +1,7 @@
 package com.joker.simplyadvanced.client.render;
 
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
-import com.joker.simplyadvanced.common.tiles.TileEntityKiln;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

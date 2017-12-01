@@ -1,6 +1,6 @@
 package com.joker.simplyadvanced;
 
-import com.joker.simplyadvanced.client.gui.AlloyFurnaceGuiHandler;
+import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.init.ModItems;
 import com.joker.simplyadvanced.common.lib.References;
@@ -35,7 +35,7 @@ public class Main
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.register();
-        NetworkRegistry.INSTANCE.registerGuiHandler(References.MODID, new AlloyFurnaceGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(References.MODID, new SAGuiHandler());
         RecipeHandler.registerCrafting();
         RecipeHandler.registerFurnace();
     }

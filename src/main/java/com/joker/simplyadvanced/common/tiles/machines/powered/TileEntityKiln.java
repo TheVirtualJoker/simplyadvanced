@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.tiles;
+package com.joker.simplyadvanced.common.tiles.machines.powered;
 
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import net.minecraft.block.state.IBlockState;

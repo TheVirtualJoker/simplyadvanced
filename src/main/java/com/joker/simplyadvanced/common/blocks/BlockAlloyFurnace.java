@@ -1,9 +1,9 @@
 package com.joker.simplyadvanced.common.blocks;
 
-import com.joker.simplyadvanced.client.gui.AlloyFurnaceGuiHandler;
+import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.TileEntityAlloyFurnace;
+import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -83,7 +83,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            playerIn.openGui(References.MODID, AlloyFurnaceGuiHandler.ALLOYFURNACE, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            playerIn.openGui(References.MODID, SAGuiHandler.ALLOYFURNACE, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }

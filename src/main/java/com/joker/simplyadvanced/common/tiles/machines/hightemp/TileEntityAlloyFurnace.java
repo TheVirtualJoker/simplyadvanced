@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.tiles;
+package com.joker.simplyadvanced.common.tiles.machines.hightemp;
 
 import com.joker.simplyadvanced.common.blocks.BlockAlloyFurnace;
 import com.joker.simplyadvanced.common.recipes.AlloyFurnaceRecipes;
