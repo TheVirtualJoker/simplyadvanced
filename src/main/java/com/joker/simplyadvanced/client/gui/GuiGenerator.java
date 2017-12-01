@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.client.gui;
 
 import com.joker.simplyadvanced.client.containers.ContainerGenerator;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import com.joker.simplyadvanced.common.utils.ProgressBar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;

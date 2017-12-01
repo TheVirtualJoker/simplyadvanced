@@ -1,6 +1,6 @@
 package com.joker.simplyadvanced.client.containers.slot;
 
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

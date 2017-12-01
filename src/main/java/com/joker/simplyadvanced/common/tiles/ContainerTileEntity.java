@@ -17,13 +17,13 @@ public abstract class ContainerTileEntity extends TileEntity implements IInvento
     private String name = null;
     private int maxStackSize = 64;
 
-    ContainerTileEntity (int size, int maxStackSize, String defaultName) {
+    public ContainerTileEntity(int size, int maxStackSize, String defaultName) {
         this.name = defaultName;
         this.maxStackSize = maxStackSize;
         inventory = NonNullList.withSize(size, ItemStack.EMPTY);
     }
 
-    ContainerTileEntity (int size, String defaultName) {
+    public ContainerTileEntity(int size, String defaultName) {
         this (size, 64, defaultName);
     }
 

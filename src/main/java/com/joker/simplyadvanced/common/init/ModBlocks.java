@@ -8,7 +8,7 @@ import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

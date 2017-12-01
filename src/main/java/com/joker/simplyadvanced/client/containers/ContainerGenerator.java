@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.client.containers;
 
 import com.joker.simplyadvanced.client.containers.slot.SlotGeneratorUpgrade;
 import com.joker.simplyadvanced.common.init.ModItems;
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

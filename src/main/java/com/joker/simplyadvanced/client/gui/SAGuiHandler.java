@@ -7,7 +7,7 @@ import com.joker.simplyadvanced.client.containers.ContainerKiln;
 import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

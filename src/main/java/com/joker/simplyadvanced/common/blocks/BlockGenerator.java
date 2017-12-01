@@ -2,7 +2,7 @@ package com.joker.simplyadvanced.common.blocks;
 
 import com.joker.simplyadvanced.client.gui.AlloyFurnaceGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
