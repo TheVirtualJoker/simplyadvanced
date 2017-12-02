@@ -46,13 +46,11 @@ public class GuiCentrifuge extends GuiContainer {
 
         if (Utils.mouseInRegion(this, 9, 6, 18, 78, mouseX, mouseY)) {
             List<String> hoveringText = new ArrayList<>();
-            String text = TextFormatting.WHITE + "%c* / %m*";
+            String text = TextFormatting.GOLD + "RF: " + TextFormatting.WHITE + "%c / %m";
             text = text.replace("%c", String.valueOf(tileentity.getField(2)));
             text = text.replace("%m", String.valueOf(tileentity.getField(3)));
-            text = text.replace("*", TextFormatting.GREEN + "RF" + TextFormatting.WHITE);
-            hoveringText.add(TextFormatting.WHITE + "RF Stored: ");
             hoveringText.add(text);
-            hoveringText.add("Percent Filled: " + Utils.percent(tileentity.getField(2), tileentity.getField(3)) + TextFormatting.GREEN + "%");
+            hoveringText.add("Percent Filled: " + Utils.percent(tileentity.getField(2), tileentity.getField(3)) + "%");
 
             if (tileentity.getField(4) == 0) {
                 hoveringText.add(" ");

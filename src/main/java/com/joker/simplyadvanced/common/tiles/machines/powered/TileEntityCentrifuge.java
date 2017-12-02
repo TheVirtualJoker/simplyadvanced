@@ -23,7 +23,7 @@ public class TileEntityCentrifuge extends TileEntityMachine implements ITickable
     private static final int[] SLOTS_BOTTOM = new int[]{0, 1, 2, 3};
 
     public TileEntityCentrifuge() {
-        super(5, "Centrifuge", new EnergyStorage(25000, 500));
+        super(5, "Centrifuge", new EnergyStorage(25000, 240));
     }
 
     @Override
@@ -92,6 +92,8 @@ public class TileEntityCentrifuge extends TileEntityMachine implements ITickable
 
     public int getSpinTime(ItemStack input) {
         if (input.isItemEqual(new ItemStack(Items.APPLE)))
+            return 1000;
+        if (input.isItemEqual(new ItemStack(Items.MAGMA_CREAM)))
             return 200;
         return 0;
     }
