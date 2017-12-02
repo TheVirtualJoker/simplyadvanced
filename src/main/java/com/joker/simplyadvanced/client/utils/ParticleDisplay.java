@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.utils;
+package com.joker.simplyadvanced.client.utils;
 
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;

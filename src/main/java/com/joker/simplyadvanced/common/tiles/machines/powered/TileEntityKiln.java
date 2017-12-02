@@ -3,7 +3,7 @@ package com.joker.simplyadvanced.common.tiles.machines.powered;
 import cofh.redstoneflux.impl.EnergyStorage;
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
-import com.joker.simplyadvanced.common.utils.ParticleDisplay;
+import com.joker.simplyadvanced.client.utils.ParticleDisplay;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

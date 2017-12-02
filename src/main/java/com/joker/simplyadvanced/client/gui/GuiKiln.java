@@ -3,7 +3,7 @@ package com.joker.simplyadvanced.client.gui;
 import com.joker.simplyadvanced.client.containers.ContainerKiln;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
-import com.joker.simplyadvanced.common.utils.ProgressBar;
+import com.joker.simplyadvanced.client.utils.ProgressBar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
