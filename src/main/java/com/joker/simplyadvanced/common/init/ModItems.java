@@ -1,9 +1,6 @@
 package com.joker.simplyadvanced.common.init;
 
-import com.joker.simplyadvanced.common.items.ItemCopperIngot;
-import com.joker.simplyadvanced.common.items.ItemHighTempFuel;
-import com.joker.simplyadvanced.common.items.ItemSpeedUpgrade;
-import com.joker.simplyadvanced.common.items.ItemStorageUpgrade;
+import com.joker.simplyadvanced.common.items.*;
 import com.joker.simplyadvanced.common.items.base.*;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -21,7 +18,9 @@ public class ModItems {
             COPPER_SWORD,
             HIGH_TEMP_FUEL,
             SPEED_UPGRADE,
-            STORAGE_UPGRADE;
+            STORAGE_UPGRADE,
+            TIN_DUST,
+            TIN_INGOT;
 
     public static void init() {
         COPPER_INGOT = new ItemCopperIngot();
@@ -33,6 +32,8 @@ public class ModItems {
         HIGH_TEMP_FUEL = new ItemHighTempFuel();
         SPEED_UPGRADE = new ItemSpeedUpgrade();
         STORAGE_UPGRADE = new ItemStorageUpgrade();
+        TIN_DUST = new ItemTinDust();
+        TIN_INGOT = new ItemTinIngot();
     }
 
     public static void reg() {
@@ -45,6 +46,8 @@ public class ModItems {
         regItem(HIGH_TEMP_FUEL);
         regItem(SPEED_UPGRADE);
         regItem(STORAGE_UPGRADE);
+        regItem(TIN_DUST);
+        regItem(TIN_INGOT);
     }
 
     private static void regItem(Item item) {

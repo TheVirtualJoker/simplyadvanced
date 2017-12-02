@@ -6,7 +6,6 @@ import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -14,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -31,7 +31,7 @@ public class BlockKiln extends Block implements ITileEntityProvider {
     public static final PropertyBool BURNING = PropertyBool.create("burning");
 
     public BlockKiln() {
-        super(Material.ROCK, MapColor.CYAN);
+        super(Material.ROCK);
         setUnlocalizedName("kiln");
         setRegistryName("kiln");
         setCreativeTab(CreativeUtil.TAB);
@@ -61,6 +61,16 @@ public class BlockKiln extends Block implements ITileEntityProvider {
             player.openGui(References.MODID, SAGuiHandler.KILN, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity entity = worldIn.getTileEntity(pos);
+        if (entity instanceof TileEntityKiln) {
+            TileEntityKiln kiln = (TileEntityKiln)entity;
+            InventoryHelper.dropInventoryItems(worldIn, pos, kiln);
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

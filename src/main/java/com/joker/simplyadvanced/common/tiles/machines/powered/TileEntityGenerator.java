@@ -1,31 +1,26 @@
 package com.joker.simplyadvanced.common.tiles.machines.powered;
 
-import com.joker.simplyadvanced.common.tiles.ContainerTileEntity;
-import com.joker.simplyadvanced.common.utils.SAEnergyStorage;
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.impl.EnergyStorage;
+import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
-
-public class TileEntityGenerator extends ContainerTileEntity implements ITickable, IEnergyStorage {
-    private SAEnergyStorage storage;
+public class TileEntityGenerator extends TileEntityMachine implements ITickable, IEnergyProvider {
     private boolean toggle = false;
     private final int maxStorage = 200000, defaultPerTick = 2;
     private int perTick = 0, storageTier = 1, speedTier = 1;
 
     public TileEntityGenerator () {
-        super(2, "Generator");
-        storage = new SAEnergyStorage(maxStorage, 500, 500);
+        super(2, "Generator", new EnergyStorage(200000, 500, 500));
     }
 
     @Override
     public void update() {
-        if (toggle) receiveEnergy(perTick, false);
+        if (toggle) getStorage().setEnergyStored(getStorage().getEnergyStored()+perTick);
         storageTier = 1;
         speedTier = 1;
         if (!getStackInSlot(0).isEmpty()) {
@@ -35,47 +30,16 @@ public class TileEntityGenerator extends ContainerTileEntity implements ITickabl
             speedTier += getStackInSlot(1).getCount();
         }
         perTick = (defaultPerTick*speedTier);
-        this.storage.setCapacity((maxStorage*storageTier));
+        getStorage().setCapacity((maxStorage*storageTier));
 
 
         toggle=!toggle;
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return storage.receiveEnergy(maxReceive, simulate);
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return storage.extractEnergy(maxExtract, simulate);
-    }
-
-    @Override
-    public int getEnergyStored() {
-        return storage.getEnergyStored();
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-        return storage.getMaxEnergyStored();
-    }
-
-    @Override
-    public boolean canExtract() {
-        return (getEnergyStored() != 0);
-    }
-
-    @Override
-    public boolean canReceive() {
-        return (getEnergyStored() != getMaxEnergyStored());
-    }
-
-    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("energy", storage.getEnergyStored());
-        compound.setInteger("maxEnergy", storage.getMaxEnergyStored());
+        compound.setInteger("maxEnergy", getStorage().getMaxEnergyStored());
         compound.setInteger("storageTier", storageTier);
         compound.setInteger("speedTier", speedTier);
         return compound;
@@ -84,25 +48,16 @@ public class TileEntityGenerator extends ContainerTileEntity implements ITickabl
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        storage.setEnergy(compound.getInteger("energy"));
-        storage.setCapacity(compound.getInteger("maxEnergy"));
+        getStorage().setCapacity(compound.getInteger("maxEnergy"));
         storageTier = compound.getInteger("storageTier");
         speedTier = compound.getInteger("speedTier");
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityEnergy.ENERGY)
-            return (T) this;
-        return super.getCapability(capability, facing);
     }
 
     @Override
     public int getField(int id) {
         switch (id) {
             case 0:
-                return getEnergyStored();
+                return getStorage().getEnergyStored();
             case 1:
                 return perTick;
             case 2:
@@ -110,7 +65,7 @@ public class TileEntityGenerator extends ContainerTileEntity implements ITickabl
             case 3:
                 return speedTier;
             case 4:
-                return getMaxEnergyStored();
+                return getStorage().getMaxEnergyStored();
             default:
                 return 0;
         }
@@ -120,7 +75,7 @@ public class TileEntityGenerator extends ContainerTileEntity implements ITickabl
     public void setField(int id, int value) {
         switch (id) {
             case 0:
-                storage.receiveEnergy(value, false);
+                getStorage().receiveEnergy(value, false);
                 break;
             case 1:
                 perTick = value;
@@ -141,4 +96,16 @@ public class TileEntityGenerator extends ContainerTileEntity implements ITickabl
 
     @Override
     public void setSlot(int slot, ItemStack item) {}
+
+
+    // -------- methods from IEnergyProvider -----------
+    @Override
+    public int extractEnergy(EnumFacing enumFacing, int i, boolean b) {
+        int out = getStorage().extractEnergy(i, false);
+        markDirty();
+        IBlockState iblockstate = world.getBlockState(pos);
+        final int FLAGS = 3;
+        world.notifyBlockUpdate(pos, iblockstate, iblockstate, FLAGS);
+        return out;
+    }
 }

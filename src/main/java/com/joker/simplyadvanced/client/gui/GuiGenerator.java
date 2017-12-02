@@ -17,7 +17,6 @@ import java.util.List;
 
 public class GuiGenerator extends GuiContainer {
 
-    private final String rfMsg = TextFormatting.WHITE+"%c* / %m*";
     private static final ResourceLocation TEXTURE = new ResourceLocation(References.MODID + ":textures/gui/container/generator.png");
     private TileEntityGenerator tileentity;
     private ProgressBar progressBar;
@@ -38,10 +37,10 @@ public class GuiGenerator extends GuiContainer {
         fontRenderer.drawString("Generated RF/t: " + tileentity.getField(1), 5, 16, Color.white.getRGB());
         fontRenderer.drawString("Storage Tier: " + tileentity.getField(2), 5, 25, Color.white.getRGB());
         fontRenderer.drawString("Speed Tier: " + tileentity.getField(3), 5, 34, Color.white.getRGB());
-        List<String> hoveringText = new ArrayList<>();
 
+        List<String> hoveringText = new ArrayList<>();
         if (isInRect(8, 56, 167, 62, mouseX, mouseY)) {
-            String text = rfMsg;
+            String text = TextFormatting.WHITE+"%c* / %m*";
             text = text.replace("%c", String.valueOf(tileentity.getField(0)));
             text = text.replace("%m", String.valueOf(tileentity.getField(4)));
             text = text.replace("*", TextFormatting.GREEN + "RF" + TextFormatting.WHITE);

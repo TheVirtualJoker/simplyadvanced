@@ -1,28 +1,25 @@
 package com.joker.simplyadvanced.client.containers;
 
-import com.joker.simplyadvanced.client.containers.slot.SlotCentrifugeOut;
-import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
+import com.joker.simplyadvanced.client.containers.slot.SlotCompressorInput;
+import com.joker.simplyadvanced.client.containers.slot.SlotOutput;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCompressor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerCentrifuge extends Container {
-    private final TileEntityCentrifuge tileentity;
+public class ContainerCompressor extends Container {
+    private final TileEntityCompressor tileentity;
+    private int compressTime;
 
-    private int spinTime;
-    private int totalSpinTime;
-    private int energyStored;
-
-    public ContainerCentrifuge(InventoryPlayer player, TileEntityCentrifuge tileentity) {
+    public ContainerCompressor(InventoryPlayer player, TileEntityCompressor tileentity) {
         this.tileentity = tileentity;
-        this.addSlotToContainer(new Slot(tileentity, 4, 80, 34));
-        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 0, 80, 4));
-        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 1, 110, 34));
-        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 2, 80, 64));
-        this.addSlotToContainer(new SlotCentrifugeOut(player.player, tileentity, 3, 50, 34));
+        this.addSlotToContainer(new SlotCompressorInput(tileentity, 0, 53, 27));
+        this.addSlotToContainer(new SlotOutput(tileentity, 1, 106, 27));
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {
@@ -44,22 +41,15 @@ public class ContainerCentrifuge extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
-        for (int i = 0; i < this.listeners.size(); i++) {
-            IContainerListener listener = this.listeners.get(i);
-            if (this.spinTime != this.tileentity.getField(0))
+        for (IContainerListener listener : this.listeners) {
+            if (this.compressTime != this.tileentity.getField(0))
                 listener.sendWindowProperty(this, 0, this.tileentity.getField(0));
-            if (this.totalSpinTime != this.tileentity.getField(1))
-                listener.sendWindowProperty(this, 1, this.tileentity.getField(1));
-            if (this.energyStored != this.tileentity.getField(2))
-                listener.sendWindowProperty(this, 2, this.tileentity.getField(2));
         }
-        this.spinTime = this.tileentity.getField(0);
-        this.totalSpinTime = this.tileentity.getField(1);
-        this.energyStored = this.tileentity.getField(2);
+        this.compressTime = this.tileentity.getField(0);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
         this.tileentity.setField(id, data);
     }
@@ -89,9 +79,10 @@ public class ContainerCentrifuge extends Container {
             if (stack1.getCount() == 0) {
                 slot.putStack(ItemStack.EMPTY);
             } else {
-                slot.onTake(playerIn, stack1);
+                slot.onSlotChanged();
             }
         }
         return stack;
     }
 }
+

@@ -6,10 +6,13 @@ item.copper_hoe.name=Copper Hoe
 item.copper_sword.name=Copper Sword
 item.speed_upgrade.name=Speed Upgrade
 item.storage_upgrade.name=Storage Upgrade
+item.tin_dust.name=Tin Dust
+item.tin_ingot.name=Tin Ingot
 
 tile.alloy_furnace.name=Alloy Furnace
 tile.copper_ore.name=Copper Ore
 tile.kiln.name=Kiln
 tile.generator.name=Generator
+tile.compressor.name=Compressor
 
 itemGroup.simplyadvanced=Simply Advanced

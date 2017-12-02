@@ -1,14 +1,11 @@
 package com.joker.simplyadvanced.common.init;
 
-import com.joker.simplyadvanced.common.blocks.BlockAlloyFurnace;
-import com.joker.simplyadvanced.common.blocks.BlockCentrifuge;
-import com.joker.simplyadvanced.common.blocks.BlockCopperOre;
-import com.joker.simplyadvanced.common.blocks.BlockGenerator;
-import com.joker.simplyadvanced.common.blocks.BlockKiln;
+import com.joker.simplyadvanced.common.blocks.*;
 import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
-import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCompressor;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -23,6 +20,7 @@ public class ModBlocks {
     public static Block KILN;
     public static Block GENERATOR;
     public static Block CENTRIFUGE;
+    public static Block COMPRESSOR;
 
     public static void init() {
         ALLOYSMELTER = new BlockAlloyFurnace();
@@ -30,6 +28,7 @@ public class ModBlocks {
         KILN = new BlockKiln();
         CENTRIFUGE = new BlockCentrifuge();
         GENERATOR = new BlockGenerator();
+        COMPRESSOR = new BlockCompressor();
     }
 
     public static void register() {
@@ -38,10 +37,12 @@ public class ModBlocks {
         registerBlock(KILN);
         registerBlock(CENTRIFUGE);
         registerBlock(GENERATOR);
+        registerBlock(COMPRESSOR);
         GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloy_furnace");
         GameRegistry.registerTileEntity(TileEntityGenerator.class, "generator");
         GameRegistry.registerTileEntity(TileEntityKiln.class, "kiln");
         GameRegistry.registerTileEntity(TileEntityCentrifuge.class, "centrifuge");
+        GameRegistry.registerTileEntity(TileEntityCompressor.class, "compressor");
     }
 
 
@@ -57,6 +58,7 @@ public class ModBlocks {
         registerRender(COPPER_ORE);
         registerRender(KILN);
         registerRender(GENERATOR);
+        registerRender(COMPRESSOR);
     }
 
     public static void registerRender(net.minecraft.block.Block block) {

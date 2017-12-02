@@ -2,45 +2,45 @@ package com.joker.simplyadvanced.common.blocks;
 
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCompressor;
 import com.joker.simplyadvanced.common.utils.CreativeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockGenerator extends Block implements ITileEntityProvider{
+public class BlockCompressor extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyBool COMPRESSING = PropertyBool.create("compressing");
 
-    public BlockGenerator() {
+    public BlockCompressor() {
         super(Material.ROCK);
-        setUnlocalizedName("generator");
-        setRegistryName("generator");
+        setUnlocalizedName("compressor");
+        setRegistryName("compressor");
         setCreativeTab(CreativeUtil.TAB);
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(COMPRESSING, false));
         setResistance(3F);
         setHarvestLevel("pickaxe", 2);
-        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         EnumFacing facing = placer.getHorizontalFacing();
-        IBlockState newState = getBlockState().getBaseState().withProperty(FACING, facing);
+        IBlockState newState = getBlockState().getBaseState().withProperty(FACING, facing).withProperty(COMPRESSING, false);
         worldIn.setBlockState(pos, newState);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
@@ -48,7 +48,7 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            player.openGui(References.MODID, SAGuiHandler.GENERATOR, world, pos.getX(), pos.getY(), pos.getZ());
+            player.openGui(References.MODID, SAGuiHandler.COMPRESSOR, world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }
@@ -56,14 +56,22 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity entity = worldIn.getTileEntity(pos);
-        if (entity instanceof TileEntityGenerator) {
-            TileEntityGenerator generator = (TileEntityGenerator)entity;
-            InventoryHelper.dropInventoryItems(worldIn, pos, generator);
+        if (entity instanceof IInventory) {
+            IInventory inventory = (IInventory)entity;
+            InventoryHelper.dropInventoryItems(worldIn, pos, inventory);
         }
         super.breakBlock(worldIn, pos, state);
     }
 
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
 
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
@@ -93,12 +101,22 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, COMPRESSING);
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityGenerator();
+        return new TileEntityCompressor();
     }
 }

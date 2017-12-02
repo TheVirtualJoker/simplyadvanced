@@ -1,7 +1,6 @@
 package com.joker.simplyadvanced.common.recipes;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -31,6 +30,10 @@ public class CentrifugeRecipes {
     }
 
     public LinkedList<ItemStack> getSpinResult(ItemStack input) {
-        return map.getOrDefault(input, new LinkedList<>());
+        for (Map.Entry<ItemStack, LinkedList<ItemStack>> entry : map.entrySet()) {
+            if (entry.getKey().isItemEqual(input)) return entry.getValue();
+        }
+
+        return new LinkedList<>();
     }
 }
