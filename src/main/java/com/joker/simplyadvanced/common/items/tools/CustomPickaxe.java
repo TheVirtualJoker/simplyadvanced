@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.items.base;
+package com.joker.simplyadvanced.common.items.tools;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;

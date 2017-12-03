@@ -1,12 +1,12 @@
-package com.joker.simplyadvanced.common.items;
+package com.joker.simplyadvanced.common.items.metals.dust;
 
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.item.Item;
 
 public class ItemTinDust extends Item {
     public ItemTinDust() {
         setUnlocalizedName("tin_dust");
         setRegistryName("tin_dust");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
     }
 }

@@ -1,7 +1,7 @@
-package com.joker.simplyadvanced.common.items.base;
+package com.joker.simplyadvanced.common.items.tools;
 
 import com.google.common.collect.Multimap;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +25,7 @@ public class CustomSword extends Item {
         this.material = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
-        this.setCreativeTab(CreativeUtil.TAB);
+        this.setCreativeTab(SATab.TAB);
         this.attackDamage = 3.0F + material.getAttackDamage();
     }
 

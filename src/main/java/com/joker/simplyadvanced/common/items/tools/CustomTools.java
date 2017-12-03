@@ -1,7 +1,7 @@
-package com.joker.simplyadvanced.common.items.base;
+package com.joker.simplyadvanced.common.items.tools;
 
 import com.google.common.collect.Multimap;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,7 +42,7 @@ public class CustomTools extends Item {
         this.efficiency = materialIn.getEfficiency();
         this.attackDamage = attackDamageIn + materialIn.getAttackDamage();
         this.attackSpeed = attackSpeedIn;
-        this.setCreativeTab(CreativeUtil.TAB);
+        this.setCreativeTab(SATab.TAB);
     }
 
     protected CustomTools(SAToolMaterial materialIn, Set<Block> effectiveBlocksIn) {

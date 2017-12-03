@@ -1,7 +1,7 @@
 package com.joker.simplyadvanced.common.blocks;
 
 import com.joker.simplyadvanced.common.init.ModBlocks;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +14,7 @@ public class BlockCopperOre extends Block {
         super(Material.ROCK);
         setUnlocalizedName("copper_ore");
         setRegistryName("copper_ore");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
         this.setHarvestLevel("pickaxe", 2);
     }
 

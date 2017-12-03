@@ -3,7 +3,7 @@ package com.joker.simplyadvanced.common.blocks;
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -31,7 +31,7 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
         super(Material.ROCK);
         setUnlocalizedName("generator");
         setRegistryName("generator");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
         setResistance(3F);
         setHarvestLevel("pickaxe", 2);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

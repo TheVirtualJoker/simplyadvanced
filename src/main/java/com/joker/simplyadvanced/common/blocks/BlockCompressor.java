@@ -3,7 +3,7 @@ package com.joker.simplyadvanced.common.blocks;
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCompressor;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -31,7 +31,7 @@ public class BlockCompressor extends Block implements ITileEntityProvider {
         super(Material.ROCK);
         setUnlocalizedName("compressor");
         setRegistryName("compressor");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(COMPRESSING, false));
         setResistance(3F);
         setHarvestLevel("pickaxe", 2);

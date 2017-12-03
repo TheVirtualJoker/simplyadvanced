@@ -1,6 +1,6 @@
-package com.joker.simplyadvanced.common.items;
+package com.joker.simplyadvanced.common.items.fuel;
 
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +8,7 @@ public class ItemHighTempFuel extends Item {
     public ItemHighTempFuel() {
         setUnlocalizedName("high_temp_fuel");
         setRegistryName("high_temp_fuel");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
     }
 
     @Override

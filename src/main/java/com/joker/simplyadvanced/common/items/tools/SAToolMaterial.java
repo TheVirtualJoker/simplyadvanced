@@ -1,4 +1,4 @@
-package com.joker.simplyadvanced.common.items.base;
+package com.joker.simplyadvanced.common.items.tools;
 
 import com.joker.simplyadvanced.common.init.ModItems;
 import net.minecraft.item.ItemStack;

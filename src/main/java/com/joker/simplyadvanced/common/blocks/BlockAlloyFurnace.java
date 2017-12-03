@@ -4,7 +4,7 @@ import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.lib.References;
 import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -38,7 +38,7 @@ public class BlockAlloyFurnace extends Block implements ITileEntityProvider {
         super(Material.ROCK, MapColor.BLACK);
         setUnlocalizedName("alloy_furnace");
         setRegistryName("alloy_furnace");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(BURNING, false));
     }
 

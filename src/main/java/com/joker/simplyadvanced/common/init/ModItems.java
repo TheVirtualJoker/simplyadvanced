@@ -1,7 +1,12 @@
 package com.joker.simplyadvanced.common.init;
 
-import com.joker.simplyadvanced.common.items.*;
-import com.joker.simplyadvanced.common.items.base.*;
+import com.joker.simplyadvanced.common.items.fuel.ItemHighTempFuel;
+import com.joker.simplyadvanced.common.items.metals.ingot.ItemCopperIngot;
+import com.joker.simplyadvanced.common.items.metals.dust.ItemTinDust;
+import com.joker.simplyadvanced.common.items.metals.ingot.ItemTinIngot;
+import com.joker.simplyadvanced.common.items.tools.*;
+import com.joker.simplyadvanced.common.items.upgrade.ItemSpeedUpgrade;
+import com.joker.simplyadvanced.common.items.upgrade.ItemStorageUpgrade;
 import com.joker.simplyadvanced.common.lib.References;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;

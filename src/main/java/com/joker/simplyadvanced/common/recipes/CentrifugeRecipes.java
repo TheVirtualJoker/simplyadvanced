@@ -1,5 +1,7 @@
 package com.joker.simplyadvanced.common.recipes;
 
+import cofh.thermalfoundation.init.TFItems;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 

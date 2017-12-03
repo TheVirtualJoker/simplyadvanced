@@ -3,9 +3,8 @@ package com.joker.simplyadvanced.common.blocks;
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.machines.hightemp.TileEntityAlloyFurnace;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
-import com.joker.simplyadvanced.common.utils.CreativeUtil;
+import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -20,9 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockCentrifuge extends Block implements ITileEntityProvider {
@@ -30,7 +27,7 @@ public class BlockCentrifuge extends Block implements ITileEntityProvider {
         super(Material.ROCK, MapColor.BLACK);
         setUnlocalizedName("centrifuge");
         setRegistryName("centrifuge");
-        setCreativeTab(CreativeUtil.TAB);
+        setCreativeTab(SATab.TAB);
     }
 
     @Override
