@@ -14,6 +14,8 @@ public class CustomPickaxe extends CustomTools {
 
     public CustomPickaxe(SAToolMaterial material) {
         super(1.0F, -2.8F, material, EFFECTIVE_ON);
+        setRegistryName(material.name().toLowerCase() + "_pickaxe");
+        setUnlocalizedName(material.name().toLowerCase() + "_pickaxe");
     }
 
     /**

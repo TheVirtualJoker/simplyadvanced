@@ -26,6 +26,8 @@ public class CustomSword extends Item {
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(SATab.TAB);
+        setRegistryName(material.name().toLowerCase() + "_sword");
+        setUnlocalizedName(material.name().toLowerCase() + "_sword");
         this.attackDamage = 3.0F + material.getAttackDamage();
     }
 

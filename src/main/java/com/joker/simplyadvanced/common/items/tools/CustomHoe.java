@@ -32,6 +32,8 @@ public class CustomHoe extends Item {
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(SATab.TAB);
+        setRegistryName(material.name().toLowerCase() + "_hoe");
+        setUnlocalizedName(material.name().toLowerCase() + "_hoe");
         this.speed = material.getAttackDamage() + 1.0F;
     }
 

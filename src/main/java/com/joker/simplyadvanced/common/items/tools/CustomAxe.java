@@ -16,6 +16,8 @@ public class CustomAxe extends CustomTools {
 
     public CustomAxe(SAToolMaterial material) {
         super(material, EFFECTIVE_ON);
+        setRegistryName(material.name().toLowerCase() + "_axe");
+        setUnlocalizedName(material.name().toLowerCase() + "_axe");
         this.attackDamage = ATTACK_DAMAGES[material.ordinal()];
         this.attackSpeed = ATTACK_SPEEDS[material.ordinal()];
     }

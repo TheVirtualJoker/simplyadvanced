@@ -1,7 +1,7 @@
 package com.joker.simplyadvanced.common.recipes;
 
-import cofh.thermalfoundation.init.TFItems;
 import cofh.thermalfoundation.item.ItemMaterial;
+import com.joker.simplyadvanced.client.utils.Utils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -11,13 +11,14 @@ import java.util.Map;
 
 public class CentrifugeRecipes {
     private static final CentrifugeRecipes SPIN = new CentrifugeRecipes();
-    Map<ItemStack, LinkedList<ItemStack>> map = new HashMap<>();
+    private Map<ItemStack, LinkedList<ItemStack>> map = new HashMap<>();
 
     public static CentrifugeRecipes instance() {
         return SPIN;
     }
 
     private CentrifugeRecipes() {
+        this.addSpinRecipe(new ItemStack(Items.DIAMOND), Utils.modifySize(ItemMaterial.ingotTin, 3), new ItemStack(Items.EMERALD), new ItemStack(Items.DIAMOND), new ItemStack(Items.IRON_INGOT));
         this.addSpinRecipe(new ItemStack(Items.APPLE), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.EMERALD), new ItemStack(Items.DIAMOND), new ItemStack(Items.IRON_INGOT));
         this.addSpinRecipe(new ItemStack(Items.MAGMA_CREAM), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.SLIME_BALL), new ItemStack(ItemStack.EMPTY.getItem()), new ItemStack(ItemStack.EMPTY.getItem()));
     }

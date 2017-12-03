@@ -1,8 +1,8 @@
 package com.joker.simplyadvanced.common.init;
 
 import com.joker.simplyadvanced.common.items.fuel.ItemHighTempFuel;
-import com.joker.simplyadvanced.common.items.metals.ingot.ItemCopperIngot;
 import com.joker.simplyadvanced.common.items.metals.dust.ItemTinDust;
+import com.joker.simplyadvanced.common.items.metals.ingot.ItemCopperIngot;
 import com.joker.simplyadvanced.common.items.metals.ingot.ItemTinIngot;
 import com.joker.simplyadvanced.common.items.tools.*;
 import com.joker.simplyadvanced.common.items.upgrade.ItemSpeedUpgrade;
@@ -21,6 +21,11 @@ public class ModItems {
             COPPER_AXE,
             COPPER_HOE,
             COPPER_SWORD,
+            TIN_SPADE,
+            TIN_PICKAXE,
+            TIN_AXE,
+            TIN_HOE,
+            TIN_SWORD,
             HIGH_TEMP_FUEL,
             SPEED_UPGRADE,
             STORAGE_UPGRADE,
@@ -29,16 +34,25 @@ public class ModItems {
 
     public static void init() {
         COPPER_INGOT = new ItemCopperIngot();
-        COPPER_SPADE = new CustomSpade(SAToolMaterial.COPPER).setUnlocalizedName("copper_spade").setRegistryName("copper_spade");
-        COPPER_PICKAXE = new CustomPickaxe(SAToolMaterial.COPPER).setUnlocalizedName("copper_pickaxe").setRegistryName("copper_pickaxe");
-        COPPER_AXE = new CustomAxe(SAToolMaterial.COPPER).setUnlocalizedName("copper_axe").setRegistryName("copper_axe");
-        COPPER_HOE = new CustomHoe(SAToolMaterial.COPPER).setUnlocalizedName("copper_hoe").setRegistryName("copper_hoe");
-        COPPER_SWORD = new CustomSword(SAToolMaterial.COPPER).setUnlocalizedName("copper_sword").setRegistryName("copper_sword");
+        TIN_DUST = new ItemTinDust();
+        TIN_INGOT = new ItemTinIngot();
+
+        // -------- Tools ----------
+        COPPER_SPADE = new CustomSpade(SAToolMaterial.COPPER);
+        COPPER_PICKAXE = new CustomPickaxe(SAToolMaterial.COPPER);
+        COPPER_AXE = new CustomAxe(SAToolMaterial.COPPER);
+        COPPER_HOE = new CustomHoe(SAToolMaterial.COPPER);
+        COPPER_SWORD = new CustomSword(SAToolMaterial.COPPER);
+        TIN_SPADE = new CustomSpade(SAToolMaterial.TIN);
+        TIN_PICKAXE = new CustomPickaxe(SAToolMaterial.TIN);
+        TIN_AXE = new CustomAxe(SAToolMaterial.TIN);
+        TIN_HOE = new CustomHoe(SAToolMaterial.TIN);
+        TIN_SWORD = new CustomSword(SAToolMaterial.TIN);
+
+        // --------- Machine Items ---------
         HIGH_TEMP_FUEL = new ItemHighTempFuel();
         SPEED_UPGRADE = new ItemSpeedUpgrade();
         STORAGE_UPGRADE = new ItemStorageUpgrade();
-        TIN_DUST = new ItemTinDust();
-        TIN_INGOT = new ItemTinIngot();
     }
 
     public static void reg() {
@@ -48,6 +62,11 @@ public class ModItems {
         regItem(COPPER_AXE);
         regItem(COPPER_HOE);
         regItem(COPPER_SWORD);
+        regItem(TIN_SPADE);
+        regItem(TIN_PICKAXE);
+        regItem(TIN_AXE);
+        regItem(TIN_HOE);
+        regItem(TIN_SWORD);
         regItem(HIGH_TEMP_FUEL);
         regItem(SPEED_UPGRADE);
         regItem(STORAGE_UPGRADE);

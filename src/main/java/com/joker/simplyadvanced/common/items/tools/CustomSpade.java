@@ -22,6 +22,8 @@ public class CustomSpade extends CustomTools {
 
     public CustomSpade(SAToolMaterial material) {
         super(1.5F, -3.0F, material, EFFECTIVE_ON);
+        setRegistryName(material.name().toLowerCase() + "_spade");
+        setUnlocalizedName(material.name().toLowerCase() + "_spade");
     }
 
     public boolean canHarvestBlock(IBlockState blockIn) {

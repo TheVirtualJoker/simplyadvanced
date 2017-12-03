@@ -1,26 +1,31 @@
 package com.joker.simplyadvanced.common.tiles.machines.powered;
 
+import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.impl.EnergyStorage;
 import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class TileEntityGenerator extends TileEntityMachine implements ITickable, IEnergyProvider {
     private boolean toggle = false;
     private final int maxStorage = 100000, defaultPerTick = 2;
     private int perTick = 0, storageTier = 1, speedTier = 1;
 
-    public TileEntityGenerator () {
+    public TileEntityGenerator() {
         super(2, "Generator", new EnergyStorage(200000, 0, 500));
     }
 
     @Override
     public void update() {
-        if (toggle) getStorage().setEnergyStored(getStorage().getEnergyStored()+perTick);
+        if (toggle) getStorage().setEnergyStored(getStorage().getEnergyStored() + perTick);
         storageTier = 1;
         speedTier = 1;
         if (!getStackInSlot(0).isEmpty()) {
@@ -29,9 +34,9 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
         if (!getStackInSlot(1).isEmpty()) {
             speedTier += getStackInSlot(1).getCount();
         }
-        perTick = (defaultPerTick*speedTier);
-        getStorage().setCapacity((maxStorage*storageTier));
-        toggle=!toggle;
+        perTick = (defaultPerTick * speedTier);
+        getStorage().setCapacity((maxStorage * storageTier));
+        toggle = !toggle;
 
         transferEnergy();
     }
@@ -95,7 +100,8 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
     }
 
     @Override
-    public void setSlot(int slot, ItemStack item) {}
+    public void setSlot(int slot, ItemStack item) {
+    }
 
 
     @Override
@@ -106,14 +112,34 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
     // -------- methods from IEnergyProvider -----------
     @Override
     public int extractEnergy(EnumFacing enumFacing, int i, boolean b) {
-        return getStorage().extractEnergy(i, b);
+        int out = getStorage().extractEnergy(i, false);
+        markDirty();
+        IBlockState iblockstate = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, iblockstate, iblockstate, 3);
+        return out;
     }
 
-    protected void transferEnergy() {
+    //TODO: Issue with transfering energy still exists (this is the method that handles that)
+    private void transferEnergy() {
         for (EnumFacing face : EnumFacing.values()) {
+            IEnergyReceiver adjacentReceiver = null;
+            TileEntity tile = BlockHelper.getAdjacentTileEntity(this, face);
+            if (EnergyHelper.isEnergyReceiverFromSide(tile, face)) {
+                adjacentReceiver = ((IEnergyReceiver) tile);
+            } else if (EnergyHelper.isEnergyHandler(tile, face)) {
+                adjacentReceiver = null;
+            }
+
             if (getStorage().getEnergyStored() > 0) {
-                int amount = EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, face, Math.min(getStorage().getMaxExtract(), getStorage().getEnergyStored()), false);
-                getStorage().setEnergyStored(getStorage().getEnergyStored() - amount);
+                if (adjacentReceiver == null) {
+                        int amount = EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, face, Math.min(getStorage().getMaxExtract(), getStorage().getEnergyStored()), false);
+                        FMLLog.info("adjacentHandler= " + amount);
+                        extractEnergy(face, amount, false);
+                    return;
+                }
+                int amount = adjacentReceiver.receiveEnergy(face, Math.min(getStorage().getMaxExtract(), getStorage().getEnergyStored()), false);
+                FMLLog.info("Other= " + amount);
+                extractEnergy(face, amount, false);
             }
         }
     }

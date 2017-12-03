@@ -1,10 +1,12 @@
 package com.joker.simplyadvanced.common.items.tools;
 
 import com.joker.simplyadvanced.common.init.ModItems;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public enum SAToolMaterial {
-    COPPER(1, 300, 6.5F, 2.0F, 14);
+    COPPER(1, 300, 6.5F, 2.0F, 14, ModItems.COPPER_INGOT),
+    TIN (2, 350, 6.5F, 2.0F, 14, ModItems.TIN_INGOT);
 
     /**
      * The level of material this tool can harvest (3 = DIAMOND, 2 = IRON, 1 = STONE, 0 = COPPER/GOLD)
@@ -33,12 +35,14 @@ public enum SAToolMaterial {
                    int maxUses,
                    float efficiency,
                    float damageVsEntity,
-                   int enchantability) {
+                   int enchantability,
+                   Item repairMaterial) {
         this.harvestLevel = harvestLevel;
         this.maxUses = maxUses;
         this.efficiency = efficiency;
         this.attackDamage = damageVsEntity;
         this.enchantability = enchantability;
+        this.repairMaterial = new ItemStack(repairMaterial);
     }
 
     /**

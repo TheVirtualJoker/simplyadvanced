@@ -33,6 +33,13 @@ public class ParticleDisplay {
         return this;
     }
 
+    public ParticleDisplay add (double addX, double addY, double addZ) {
+        this.addX = addX;
+        this.addY = addY;
+        this.addZ = addZ;
+        return this;
+    }
+
     public void spawnParticles(boolean center) {
         double x = pos.getX() + (center?0.5:0.0);
         double y = pos.getY() + (center?0.5:0.0);

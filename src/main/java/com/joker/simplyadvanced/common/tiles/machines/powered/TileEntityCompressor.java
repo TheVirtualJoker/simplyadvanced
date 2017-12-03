@@ -1,11 +1,11 @@
 package com.joker.simplyadvanced.common.tiles.machines.powered;
 
 import cofh.redstoneflux.impl.EnergyStorage;
+import com.joker.simplyadvanced.client.utils.ParticleDisplay;
+import com.joker.simplyadvanced.client.utils.Utils;
 import com.joker.simplyadvanced.common.blocks.BlockCompressor;
 import com.joker.simplyadvanced.common.recipes.CompressorRecipes;
 import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
-import com.joker.simplyadvanced.client.utils.ParticleDisplay;
-import com.joker.simplyadvanced.client.utils.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -35,12 +35,12 @@ public class TileEntityCompressor extends TileEntityMachine implements ITickable
         if (isCompressing() && (getField(5) >= 60)) {
             world.setBlockState(pos, state.withProperty(BlockCompressor.COMPRESSING, true));
             ParticleDisplay display = new ParticleDisplay(world, pos).setCount(4)
-                    .setParticleType(EnumParticleTypes.SNOW_SHOVEL)
+                    .setParticleType(EnumParticleTypes.SMOKE_NORMAL)
                     .setSpread(
                             Utils.randomFloat(-0.3F, 0.3F),
-                            Utils.randomFloat(0.2F, 0.4F),
+                            0.0F,
                             Utils.randomFloat(-0.3F, 0.3F)
-                    );
+                    ).add(0, 0.1, 0);
             display.spawnParticles(true);
         }else{
             world.setBlockState(pos, state.withProperty(BlockCompressor.COMPRESSING, false));
