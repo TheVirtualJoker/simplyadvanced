@@ -111,6 +111,15 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
     }
 
     @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        getStorage().setEnergyStored(compound.getInteger("energy"));
+        getStorage().setCapacity(compound.getInteger("maxEnergy"));
+        storageTier = compound.getInteger("storageTier");
+        speedTier = compound.getInteger("speedTier");
+        super.readFromNBT(compound);
+    }
+    
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setInteger("energy", getStorage().getEnergyStored());
         compound.setInteger("maxEnergy", getStorage().getMaxEnergyStored());
@@ -118,15 +127,6 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
         compound.setInteger("speedTier", speedTier);
         super.writeToNBT(compound);
         return compound;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        getStorage().setEnergyStored(compound.getInteger("energy"));
-        getStorage().setCapacity(compound.getInteger("maxEnergy"));
-        storageTier = compound.getInteger("storageTier");
-        speedTier = compound.getInteger("speedTier");
-        super.readFromNBT(compound);
     }
 
     @Override
