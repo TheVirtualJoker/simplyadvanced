@@ -20,7 +20,7 @@ public class CentrifugeRecipes {
     private CentrifugeRecipes() {
         this.addSpinRecipe(new ItemStack(Items.DIAMOND), Utils.modifySize(ItemMaterial.ingotTin, 3), new ItemStack(Items.EMERALD), new ItemStack(Items.DIAMOND), new ItemStack(Items.IRON_INGOT));
         this.addSpinRecipe(new ItemStack(Items.APPLE), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.EMERALD), new ItemStack(Items.DIAMOND), new ItemStack(Items.IRON_INGOT));
-        this.addSpinRecipe(new ItemStack(Items.MAGMA_CREAM), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.SLIME_BALL), new ItemStack(ItemStack.EMPTY.getItem()), new ItemStack(ItemStack.EMPTY.getItem()));
+        this.addSpinRecipe(new ItemStack(Items.MAGMA_CREAM), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.SLIME_BALL), ItemStack.EMPTY, ItemStack.EMPTY);
     }
 
     private void addSpinRecipe(ItemStack input, ItemStack output1, ItemStack output2, ItemStack output3, ItemStack output4) {

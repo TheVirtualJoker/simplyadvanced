@@ -6,6 +6,7 @@ import cofh.redstoneflux.impl.EnergyStorage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -121,4 +122,9 @@ public abstract class TileEntityMachine extends ContainerTileEntity implements I
         }
         return super.getCapability(capability, from);
     }
+
+    /**
+     * Called from the Block Class, and used to update data on a blocks neighbor
+     */
+    public void onNeighborChange(BlockPos pos, BlockPos neighbor) {}
 }

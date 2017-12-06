@@ -1,10 +1,12 @@
 package com.joker.simplyadvanced.client.gui;
 
 import com.joker.simplyadvanced.client.containers.ContainerCentrifuge;
-import com.joker.simplyadvanced.common.lib.References;
-import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
+import com.joker.simplyadvanced.client.utils.Pair;
 import com.joker.simplyadvanced.client.utils.ProgressBar;
 import com.joker.simplyadvanced.client.utils.Utils;
+import com.joker.simplyadvanced.common.config.Config;
+import com.joker.simplyadvanced.common.lib.References;
+import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCentrifuge;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,13 +15,16 @@ import net.minecraft.util.text.TextFormatting;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GuiCentrifuge extends GuiContainer {
     private static final ResourceLocation CENTRIFUGE_TEXTURE = new ResourceLocation(References.MODID + ":textures/gui/container/centrifuge.png");
     private final InventoryPlayer player;
     private TileEntityCentrifuge tileentity;
+    private List<Pair<Integer, Integer>> pairs = new ArrayList<>();
     private ProgressBar energyBar, arrow1, arrow2, arrow3, arrow4;
+    private int energy = 0, maxEnergy;
 
     public GuiCentrifuge(InventoryPlayer player, TileEntityCentrifuge tileentity) {
         super(new ContainerCentrifuge(player, tileentity));
@@ -27,12 +32,19 @@ public class GuiCentrifuge extends GuiContainer {
         this.tileentity = tileentity;
         this.xSize = 175;
         this.ySize = 164;
+        pairs = Arrays.asList(
+                new Pair<> (68, 37),
+                new Pair<> (83, 22),
+                new Pair<> (98, 37),
+                new Pair<> (83, 52)
+        );
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.mc.getTextureManager().bindTexture(CENTRIFUGE_TEXTURE);
+        fontRenderer.drawString(tileentity.hasCustomName() ? tileentity.getName() : "Centrifuge", 22, 5, Color.white.getRGB());
         energyBar.draw(mc);
         if (tileentity.isSpining()) {
             arrow1.draw(mc);
@@ -40,23 +52,32 @@ public class GuiCentrifuge extends GuiContainer {
             arrow3.draw(mc);
             arrow4.draw(mc);
         }
+        energy = tileentity.getField(2);
+        maxEnergy = tileentity.getField(3);
 
+        if (Config.TASK_PERCENTAGE) {
+            int percent = 0;
+            if (tileentity.getField(0) != 0) percent = Utils.percent(tileentity.getField(0), tileentity.getField(1));
 
-        fontRenderer.drawString(tileentity.hasCustomName() ? tileentity.getName() : "Centrifuge", 22, 5, Color.white.getRGB());
+            for (Pair<Integer, Integer> pair : pairs) {
+                if (Utils.mouseInRegion(this, pair.getL(), pair.getR(), pair.getL() + 9, pair.getR() + 9, mouseX, mouseY)) {
+                    List<String> hoveringText = new ArrayList<>();
+                    hoveringText.add(String.valueOf(percent) + TextFormatting.GOLD + "%");
+                    drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
+                }
+            }
+        }
 
         if (Utils.mouseInRegion(this, 9, 6, 18, 78, mouseX, mouseY)) {
             List<String> hoveringText = new ArrayList<>();
-            String text = TextFormatting.GOLD + "RF: " + TextFormatting.WHITE + "%c / %m";
-            text = text.replace("%c", String.valueOf(tileentity.getField(2)));
-            text = text.replace("%m", String.valueOf(tileentity.getField(3)));
-            hoveringText.add(text);
-            hoveringText.add("Percent Filled: " + Utils.percent(tileentity.getField(2), tileentity.getField(3)) + "%");
+            if (Config.POWER_STORED) hoveringText.add(TextFormatting.GOLD+"RF: " + TextFormatting.WHITE + energy + " / " + maxEnergy);
+            if (Config.POWER_PERCENTAGE) hoveringText.add("Percent Filled: " + Utils.percent(energy, maxEnergy) + TextFormatting.GOLD + "%");
 
             if (tileentity.getField(4) == 0) {
-                hoveringText.add(" ");
+                if (!hoveringText.isEmpty()) hoveringText.add(" ");
                 hoveringText.add(TextFormatting.RED + "Not Enough Power");
             }
-            drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
+            if (!hoveringText.isEmpty()) drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
 
         }
     }

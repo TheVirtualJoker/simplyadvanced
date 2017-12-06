@@ -1,6 +1,7 @@
 package com.joker.simplyadvanced;
 
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
+import com.joker.simplyadvanced.common.config.Config;
 import com.joker.simplyadvanced.common.init.ModBlocks;
 import com.joker.simplyadvanced.common.init.ModItems;
 import com.joker.simplyadvanced.common.lib.References;
@@ -14,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid = References.MODID, version = References.VERSION)
+@Mod(modid = References.MODID, version = References.VERSION, guiFactory = "com.joker.simplyadvanced.common.config.ConfigGuiFactory")
 public class Main
 {
 
@@ -30,6 +31,8 @@ public class Main
         ModItems.reg();
         ModBlocks.init();
         ModBlocks.register();
+        Config.preInit();
+        Config.clientPreInit();
     }
 
     @EventHandler

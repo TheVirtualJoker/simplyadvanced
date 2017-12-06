@@ -2,6 +2,7 @@ package com.joker.simplyadvanced.common.blocks;
 
 import com.joker.simplyadvanced.client.gui.SAGuiHandler;
 import com.joker.simplyadvanced.common.lib.References;
+import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityGenerator;
 import com.joker.simplyadvanced.common.utils.SATab;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -43,6 +45,19 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
         IBlockState newState = getBlockState().getBaseState().withProperty(FACING, facing);
         worldIn.setBlockState(pos, newState);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+
+
+        TileEntity entity = worldIn.getTileEntity(pos);
+        if (entity == null) return;
+        if (entity instanceof TileEntityMachine) {
+            TileEntityMachine machine = (TileEntityMachine)entity;
+            machine.onNeighborChange(pos, pos.up());
+            machine.onNeighborChange(pos, pos.down());
+            machine.onNeighborChange(pos, pos.north());
+            machine.onNeighborChange(pos, pos.east());
+            machine.onNeighborChange(pos, pos.south());
+            machine.onNeighborChange(pos, pos.west());
+        }
     }
 
     @Override
@@ -63,7 +78,17 @@ public class BlockGenerator extends Block implements ITileEntityProvider{
         super.breakBlock(worldIn, pos, state);
     }
 
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        super.onNeighborChange(world, pos, neighbor);
 
+        TileEntity entity = world.getTileEntity(pos);
+        if (entity == null) return;
+        if (entity instanceof TileEntityMachine) {
+            TileEntityMachine machine = (TileEntityMachine)entity;
+            machine.onNeighborChange(pos, neighbor);
+        }
+    }
 
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing enumfacing = EnumFacing.getFront(meta);

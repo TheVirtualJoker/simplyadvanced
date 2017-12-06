@@ -119,9 +119,14 @@ public class TileEntityCentrifuge extends TileEntityMachine implements ITickable
                 ItemStack result2 = result.get(1);
                 ItemStack result3 = result.get(2);
                 ItemStack result4 = result.get(3);
-                if (output1.isEmpty() && output2.isEmpty() && output3.isEmpty() && output4.isEmpty()) return true;
-                if (!output1.isItemEqual(result1) || !output2.isItemEqual(result2) || !output3.isItemEqual(result3) || !output4.isItemEqual(result4))
-                    return false;
+                if (output1.isEmpty()
+                        && output2.isEmpty()
+                        && output3.isEmpty()
+                        && output4.isEmpty()) return true;
+                if (!output1.isItemEqual(result1)
+                        && !output2.isItemEqual(result2)
+                        && !output3.isItemEqual(result3)
+                        && !output4.isItemEqual(result4)) return false;
                 int res1 = output1.getCount() + result1.getCount();
                 int res2 = output2.getCount() + result2.getCount();
                 int res3 = output3.getCount() + result3.getCount();
@@ -217,16 +222,17 @@ public class TileEntityCentrifuge extends TileEntityMachine implements ITickable
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return new int[0];
+        if (side == EnumFacing.DOWN) return SLOTS_BOTTOM;
+        return SLOTS_TOP;
     }
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return false;
+        return index == 4;
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return false;
+        return index != 4;
     }
 }

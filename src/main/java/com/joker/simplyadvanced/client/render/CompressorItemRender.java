@@ -1,6 +1,7 @@
 package com.joker.simplyadvanced.client.render;
 
 import com.joker.simplyadvanced.common.blocks.BlockCompressor;
+import com.joker.simplyadvanced.common.config.Config;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityCompressor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ public class CompressorItemRender extends TileEntitySpecialRenderer<TileEntityCo
 
     @Override
     public void render(TileEntityCompressor compressor, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (!Config.RENDER_ITEM) return;
         GL11.glPushMatrix();
 
         float xOffset = 0.0F;
@@ -55,7 +57,7 @@ public class CompressorItemRender extends TileEntitySpecialRenderer<TileEntityCo
         if (stack.isEmpty() && compressor.getStackInSlot(1).copy().isEmpty())
             stack = ItemStack.EMPTY;
 
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && (compressor.getField(5) < 60)) {
             stack.setCount(1);
             EntityItem entityItem = new EntityItem(Minecraft.getMinecraft().world, 0D, 0D, 0D, stack);
             entityItem.hoverStart = 0.0F;

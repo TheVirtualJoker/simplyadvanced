@@ -1,6 +1,7 @@
 package com.joker.simplyadvanced.client.render;
 
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
+import com.joker.simplyadvanced.common.config.Config;
 import com.joker.simplyadvanced.common.tiles.machines.powered.TileEntityKiln;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,8 @@ public class KilnItemRender extends TileEntitySpecialRenderer<TileEntityKiln> {
 
     @Override
     public void render(TileEntityKiln kiln, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        if (!Config.RENDER_ITEM) return;
+
         GL11.glPushMatrix();
 
         float xOffset = 0.0F;

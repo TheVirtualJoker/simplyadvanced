@@ -1,5 +1,6 @@
 package com.joker.simplyadvanced.client.utils;
 
+import com.joker.simplyadvanced.common.config.Config;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,6 +42,7 @@ public class ParticleDisplay {
     }
 
     public void spawnParticles(boolean center) {
+        if (!Config.SHOW_PARTICLES) return;
         double x = pos.getX() + (center?0.5:0.0);
         double y = pos.getY() + (center?0.5:0.0);
         double z = pos.getZ() + (center?0.5:0.0);

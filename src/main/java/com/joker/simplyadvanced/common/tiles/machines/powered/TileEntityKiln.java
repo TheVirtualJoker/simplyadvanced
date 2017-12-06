@@ -1,9 +1,10 @@
 package com.joker.simplyadvanced.common.tiles.machines.powered;
 
 import cofh.redstoneflux.impl.EnergyStorage;
+import com.joker.simplyadvanced.client.utils.ParticleDisplay;
+import com.joker.simplyadvanced.client.utils.Utils;
 import com.joker.simplyadvanced.common.blocks.BlockKiln;
 import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
-import com.joker.simplyadvanced.client.utils.ParticleDisplay;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,13 +14,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 public class TileEntityKiln extends TileEntityMachine implements ITickable {
-    private int cookTime, per3 = 0;
-    private final int totalCookTime = 500, perUse = 200;
+    private int hardenTime, per3 = 0;
+    private final int totalHardenTime = 500, perUse = 200;
 
     public TileEntityKiln() {
         super(2, 1, "Kiln", new EnergyStorage(25000));
@@ -33,7 +33,7 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
     @Override
     public void setSlot(int slot, ItemStack item) {
         if (slot == 0) {
-            this.cookTime = 0;
+            this.hardenTime = 0;
             this.markDirty();
         }
     }
@@ -42,15 +42,17 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
     public int getField(int id) {
         switch (id) {
             case 0:
-                return this.cookTime;
+                return this.hardenTime;
             case 1:
-                return this.totalCookTime;
+                return this.totalHardenTime;
             case 2:
                 return getStorage().getEnergyStored();
             case 3:
                 return getStorage().getMaxEnergyStored();
             case 4:
                 return (getStorage().getEnergyStored() >= (perUse - 5)) ? 1 : 0;
+            case 5:
+                return Utils.percent(hardenTime, totalHardenTime);
             default:
                 return 0;
         }
@@ -60,7 +62,7 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
     public void setField(int id, int value) {
         switch (id) {
             case 0:
-                this.cookTime = value;
+                this.hardenTime = value;
                 break;
         }
     }
@@ -70,17 +72,17 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
         return 5;
     }
 
-    public boolean isBurning() {
-        return this.cookTime > 0;
+    public boolean isHardening() {
+        return this.hardenTime > 0;
     }
 
     @Override
     public void update() {
         boolean mk = false;
         IBlockState state = getWorld().getBlockState(getPos());
-        if (isBurning() && !state.getValue(BlockKiln.BURNING))
+        if (isHardening() && !state.getValue(BlockKiln.BURNING))
             world.setBlockState(pos, state.withProperty(BlockKiln.BURNING, true));
-        if (!isBurning() && state.getValue(BlockKiln.BURNING))
+        if (!isHardening() && state.getValue(BlockKiln.BURNING))
             world.setBlockState(pos, state.withProperty(BlockKiln.BURNING, false));
         if (canHarden() && (!getStackInSlot(0).isEmpty()) && getStackInSlot(1).isEmpty()) {
             if (per3 >= 3) {
@@ -88,35 +90,35 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
                 if (state.getValue(BlockKiln.BURNING)) {
                     if ((getStorage().getEnergyStored() >= (perUse - 5))) {
                         spawnParticles(EnumParticleTypes.FLAME,
-                                randomFloat(world.rand, -0.3F, 0.3F),
-                                randomFloat(world.rand, 0.2F, 0.4F),
-                                randomFloat(world.rand, -0.3F, 0.3F));
+                                Utils.randomFloat(-0.3F, 0.3F),
+                                Utils.randomFloat(0.2F, 0.4F),
+                                Utils.randomFloat(-0.3F, 0.3F));
                         spawnParticles(EnumParticleTypes.SMOKE_NORMAL,
-                                randomFloat(world.rand, -0.2F, 0.2F),
-                                randomFloat(world.rand, 0.3F, 0.4F),
-                                randomFloat(world.rand, -0.2F, 0.2F));
+                                Utils.randomFloat(-0.2F, 0.2F),
+                                Utils.randomFloat(0.3F, 0.4F),
+                                Utils.randomFloat(-0.2F, 0.2F));
                     } else {
                         spawnParticles(EnumParticleTypes.SNOW_SHOVEL,
-                                randomFloat(world.rand, -0.3F, 0.3F),
-                                randomFloat(world.rand, 0.2F, 0.4F),
-                                randomFloat(world.rand, -0.3F, 0.3F));
+                                Utils.randomFloat(-0.3F, 0.3F),
+                                Utils.randomFloat(0.2F, 0.4F),
+                                Utils.randomFloat(-0.3F, 0.3F));
                     }
                 }
             }
 
             per3++;
             if (getStorage().getEnergyStored() >= perUse) {
-                this.cookTime++;
+                this.hardenTime++;
                 getStorage().extractEnergy(perUse, false);
             }
-            if (this.cookTime == this.totalCookTime) {
-                this.cookTime = 0;
+            if (this.hardenTime == this.totalHardenTime) {
+                this.hardenTime = 0;
                 this.hardenItem();
                 mk = true;
             }
         } else {
             per3 = 0;
-            this.cookTime = 0;
+            this.hardenTime = 0;
         }
 
         if (mk) markDirty();
@@ -126,13 +128,9 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
                                 float spreadX, float spreadY, float spreadZ) {
         IBlockState state = getWorld().getBlockState(getPos());
         if (!state.getValue(BlockKiln.OPENED)) return;
-        ParticleDisplay display = new ParticleDisplay (world, pos);
+        ParticleDisplay display = new ParticleDisplay(world, pos);
         display.setCount(3).setParticleType(particle).setSpread(spreadX, spreadY, spreadZ);
         display.spawnParticles(true);
-    }
-
-    public float randomFloat(Random random, float start, float end) {
-        return start + random.nextFloat() * (end - start);
     }
 
     public void hardenItem() {
@@ -142,6 +140,7 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
             ItemStack result = item.getDefaultInstance();
             result.setTagInfo("ench", input.getEnchantmentTagList());
             result.setTagInfo("hardened", new NBTTagString("This item has been Hardened via the Kiln"));
+            result = Utils.addLoreLine(result, TextFormatting.GRAY + "Hardened");
             ItemStack output = getStackInSlot(1);
 
             if (output.isEmpty()) {
@@ -190,18 +189,6 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
     }
 
     @Override
-    public int receiveEnergy(EnumFacing enumFacing, int i, boolean b) {
-        int value = i;
-        if (isBurning()) value = (i - (perUse + perUse));
-        int in = getStorage().receiveEnergy(value, false);
-        markDirty();
-        IBlockState iblockstate = world.getBlockState(pos);
-        final int FLAGS = 3;
-        world.notifyBlockUpdate(pos, iblockstate, iblockstate, FLAGS);
-        return in;
-    }
-
-    @Override
     public boolean canConnectEnergy(EnumFacing enumFacing) {
         IBlockState state = getWorld().getBlockState(getPos());
         return enumFacing != state.getValue(BlockKiln.FACING).getOpposite();
@@ -210,13 +197,13 @@ public class TileEntityKiln extends TileEntityMachine implements ITickable {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.cookTime = compound.getInteger("CookTime");
+        this.hardenTime = compound.getInteger("hardenTime");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("CookTime", this.cookTime);
+        compound.setInteger("hardenTime", this.hardenTime);
         return compound;
     }
 }

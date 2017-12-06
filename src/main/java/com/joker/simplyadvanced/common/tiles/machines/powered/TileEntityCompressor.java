@@ -40,13 +40,14 @@ public class TileEntityCompressor extends TileEntityMachine implements ITickable
                             Utils.randomFloat(-0.3F, 0.3F),
                             0.0F,
                             Utils.randomFloat(-0.3F, 0.3F)
-                    ).add(0, 0.1, 0);
+                    ).add(0, -0.14, 0);
             display.spawnParticles(true);
         }else{
             world.setBlockState(pos, state.withProperty(BlockCompressor.COMPRESSING, false));
         }
 
         if (canCompress()) {
+            totalCompressTime = CompressorRecipes.getInstance().getResult(getStackInSlot(0)).getTime();
             if (getStorage().getEnergyStored() >= perUse) {
                 this.compressTime++;
                 if (isCompressing() && !getStackInSlot(0).isEmpty()) {
@@ -70,7 +71,7 @@ public class TileEntityCompressor extends TileEntityMachine implements ITickable
     }
 
     public boolean canCompress(ItemStack stack) {
-        return !CompressorRecipes.getInstance().getResult(stack).isEmpty();
+        return CompressorRecipes.getInstance().getResult(stack) != null;
     }
 
     public boolean canCompress() {
@@ -79,23 +80,24 @@ public class TileEntityCompressor extends TileEntityMachine implements ITickable
             compressTime = 0;
             return false;
         }
-        ItemStack result = CompressorRecipes.getInstance().getResult(input);
+        CompressorRecipes.Result result = CompressorRecipes.getInstance().getResult(input);
+        if (result == null) return false;
         ItemStack output = getStackInSlot(1);
         if (output.isEmpty()) return true;
-        if (!output.isItemEqual(result)) return false;
-        int res = output.getCount() + result.getCount();
+        if (!output.isItemEqual(result.getOutput())) return false;
+        int res = output.getCount() + result.getOutput().getCount();
         return res <= getInventoryStackLimit() && res <= output.getMaxStackSize();
     }
 
     public void compressItem() {
         if (canCompress()) {
             ItemStack input = this.getStackInSlot(0).copy();
-            ItemStack result = CompressorRecipes.getInstance().getResult(input);
+            CompressorRecipes.Result result = CompressorRecipes.getInstance().getResult(input);
             ItemStack output = getStackInSlot(1);
             if (output.isEmpty())
-                setInventorySlotContents(1, result.copy());
-            else if (output.getItem() == result.getItem())
-                output.grow(result.getCount());
+                setInventorySlotContents(1, result.getOutput().copy());
+            else if (output.getItem() == result.getOutput().getItem())
+                output.grow(result.getOutput().getCount());
             getStackInSlot(0).shrink(1);
             this.compressTime = 0;
         }
@@ -141,10 +143,7 @@ public class TileEntityCompressor extends TileEntityMachine implements ITickable
         if (index == 0) {
             ItemStack inputSlot = getStackInSlot(0);
             if (inputSlot.isEmpty()) return canCompress(itemStackIn);
-            if (inputSlot.isItemEqual(itemStackIn)) {
-                int count = inputSlot.getCount() + itemStackIn.getCount();
-                return (count <= getInventoryStackLimit());
-            }
+            return true;
         }
         return false;
     }

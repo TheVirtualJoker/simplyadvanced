@@ -1,9 +1,10 @@
 package com.joker.simplyadvanced.common.tiles.machines.powered;
 
 import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.EnergyHelper;
+import cofh.redstoneflux.api.IEnergyHandler;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyStorage;
 import cofh.redstoneflux.impl.EnergyStorage;
 import com.joker.simplyadvanced.common.tiles.TileEntityMachine;
 import net.minecraft.block.state.IBlockState;
@@ -12,15 +13,40 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityGenerator extends TileEntityMachine implements ITickable, IEnergyProvider {
     private boolean toggle = false;
     private final int maxStorage = 100000, defaultPerTick = 2;
-    private int perTick = 0, storageTier = 1, speedTier = 1;
+    private int perTick = 0, storageTier = 1, speedTier = 1, updateTask = 0;
+    private boolean cached = false, sendEnergy = false;
+    private IEnergyHandler[] adjacentEnergyHandlers = new IEnergyHandler[6];
+
 
     public TileEntityGenerator() {
         super(2, "Generator", new EnergyStorage(200000, 0, 500));
+    }
+
+    private void updateAdjacentHandler(BlockPos pos) {
+        if (world.isRemote) return;
+        int side = BlockHelper.determineAdjacentSide(this, pos);
+
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileEntityGenerator) return;
+
+        if (tile instanceof IEnergyStorage) {
+            adjacentEnergyHandlers[side] = (IEnergyHandler) tile;
+        }else if (tile instanceof IEnergyReceiver) {
+            adjacentEnergyHandlers[side] = (IEnergyHandler) tile;
+        }else {
+            adjacentEnergyHandlers[side] = null;
+        }
+        cached = true;
+    }
+
+    @Override
+    public void onNeighborChange(BlockPos pos, BlockPos neighbor) {
+        updateAdjacentHandler(neighbor);
     }
 
     @Override
@@ -35,27 +61,72 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
             speedTier += getStackInSlot(1).getCount();
         }
         perTick = (defaultPerTick * speedTier);
-        getStorage().setCapacity((maxStorage * storageTier));
-        toggle = !toggle;
+        if (!sendEnergy) getStorage().setCapacity((maxStorage * storageTier));
+        if (updateTask == 0) {
+            updateTask = 30;
+            updateAdjacentHandler(pos.up());
+            updateAdjacentHandler(pos.down());
+            updateAdjacentHandler(pos.north());
+            updateAdjacentHandler(pos.east());
+            updateAdjacentHandler(pos.south());
+            updateAdjacentHandler(pos.west());
+        }
 
-        transferEnergy();
+        if (cached) {
+            Result result = canSendEnergy();
+            sendEnergy = (result != null);
+            if (result == null) return;
+            IEnergyHandler handler = result.getHandler();
+
+            if (handler instanceof IEnergyReceiver) {
+                int remaining = ((IEnergyReceiver)handler).receiveEnergy(result.getSide(), getStorage().getMaxExtract(), false);
+                extractEnergy(result.getSide(), remaining, false);
+            }
+        }
+
+        toggle = !toggle;
+        updateTask--;
+    }
+
+    private Result canSendEnergy () {
+        if (getStorage().getEnergyStored() < getStorage().getMaxExtract()) return null;
+
+        if (cached) {
+            for (int side = 0; side < 6 && !sendEnergy; side++) {
+                EnumFacing face = EnumFacing.VALUES[side];
+                IEnergyHandler handler = adjacentEnergyHandlers[side];
+                if (handler == null) continue;
+                return new Result () {
+                    @Override public EnumFacing getSide() {
+                        return face;
+                    }
+
+                    @Override public IEnergyHandler getHandler() {
+                        return handler;
+                    }
+                };
+            }
+        }
+        return null;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
+        compound.setInteger("energy", getStorage().getEnergyStored());
         compound.setInteger("maxEnergy", getStorage().getMaxEnergyStored());
         compound.setInteger("storageTier", storageTier);
         compound.setInteger("speedTier", speedTier);
+        super.writeToNBT(compound);
         return compound;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
+        getStorage().setEnergyStored(compound.getInteger("energy"));
         getStorage().setCapacity(compound.getInteger("maxEnergy"));
         storageTier = compound.getInteger("storageTier");
         speedTier = compound.getInteger("speedTier");
+        super.readFromNBT(compound);
     }
 
     @Override
@@ -119,28 +190,9 @@ public class TileEntityGenerator extends TileEntityMachine implements ITickable,
         return out;
     }
 
-    //TODO: Issue with transfering energy still exists (this is the method that handles that)
-    private void transferEnergy() {
-        for (EnumFacing face : EnumFacing.values()) {
-            IEnergyReceiver adjacentReceiver = null;
-            TileEntity tile = BlockHelper.getAdjacentTileEntity(this, face);
-            if (EnergyHelper.isEnergyReceiverFromSide(tile, face)) {
-                adjacentReceiver = ((IEnergyReceiver) tile);
-            } else if (EnergyHelper.isEnergyHandler(tile, face)) {
-                adjacentReceiver = null;
-            }
+    private interface Result {
+        EnumFacing getSide ();
 
-            if (getStorage().getEnergyStored() > 0) {
-                if (adjacentReceiver == null) {
-                        int amount = EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, face, Math.min(getStorage().getMaxExtract(), getStorage().getEnergyStored()), false);
-                        FMLLog.info("adjacentHandler= " + amount);
-                        extractEnergy(face, amount, false);
-                    return;
-                }
-                int amount = adjacentReceiver.receiveEnergy(face, Math.min(getStorage().getMaxExtract(), getStorage().getEnergyStored()), false);
-                FMLLog.info("Other= " + amount);
-                extractEnergy(face, amount, false);
-            }
-        }
+        IEnergyHandler getHandler();
     }
 }
