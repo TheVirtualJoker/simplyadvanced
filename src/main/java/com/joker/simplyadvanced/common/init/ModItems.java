@@ -4,6 +4,7 @@ import com.joker.simplyadvanced.common.items.fuel.ItemHighTempFuel;
 import com.joker.simplyadvanced.common.items.metals.dust.ItemTinDust;
 import com.joker.simplyadvanced.common.items.metals.ingot.ItemCopperIngot;
 import com.joker.simplyadvanced.common.items.metals.ingot.ItemTinIngot;
+import com.joker.simplyadvanced.common.items.plants.ItemReedOre;
 import com.joker.simplyadvanced.common.items.tools.*;
 import com.joker.simplyadvanced.common.items.upgrade.ItemSpeedUpgrade;
 import com.joker.simplyadvanced.common.items.upgrade.ItemStorageUpgrade;
@@ -30,7 +31,8 @@ public class ModItems {
             SPEED_UPGRADE,
             STORAGE_UPGRADE,
             TIN_DUST,
-            TIN_INGOT;
+            TIN_INGOT,
+            ORE_REED;
 
     public static void init() {
         COPPER_INGOT = new ItemCopperIngot();
@@ -53,6 +55,9 @@ public class ModItems {
         HIGH_TEMP_FUEL = new ItemHighTempFuel();
         SPEED_UPGRADE = new ItemSpeedUpgrade();
         STORAGE_UPGRADE = new ItemStorageUpgrade();
+
+        //---------- Plants ---------
+        ORE_REED = new ItemReedOre();
     }
 
     public static void reg() {
@@ -72,6 +77,7 @@ public class ModItems {
         regItem(STORAGE_UPGRADE);
         regItem(TIN_DUST);
         regItem(TIN_INGOT);
+        regItem(ORE_REED);
     }
 
     private static void regItem(Item item) {

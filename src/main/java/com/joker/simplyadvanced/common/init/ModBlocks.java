@@ -21,6 +21,7 @@ public class ModBlocks {
     public static Block GENERATOR;
     public static Block CENTRIFUGE;
     public static Block COMPRESSOR;
+    public static Block ORE_REED;
 
     public static void init() {
         ALLOYSMELTER = new BlockAlloyFurnace();
@@ -29,6 +30,7 @@ public class ModBlocks {
         CENTRIFUGE = new BlockCentrifuge();
         GENERATOR = new BlockGenerator();
         COMPRESSOR = new BlockCompressor();
+        ORE_REED = new BlockOreReed();
     }
 
     public static void register() {
@@ -38,6 +40,7 @@ public class ModBlocks {
         registerBlock(CENTRIFUGE);
         registerBlock(GENERATOR);
         registerBlock(COMPRESSOR);
+        registerBlock(ORE_REED);
         GameRegistry.registerTileEntity(TileEntityAlloyFurnace.class, "alloy_furnace");
         GameRegistry.registerTileEntity(TileEntityGenerator.class, "generator");
         GameRegistry.registerTileEntity(TileEntityKiln.class, "kiln");
